@@ -1,0 +1,81 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+minNumArgs 2 $#
+
+: << DOCSTRING
+Usage: $(basename "$0") FILELIST DESTDIR [PREFIX]
+
+'$(basename "$0")' reads the file FILELIST and creates a .tgz file
+(with the command 'tar') containing all files and directories
+listed in FILELIST.
+
+FILELIST must contain one path to a file or directory per line.
+Paths can be either absolute or relative to the current working
+directory.
+
+If a path starts with '~', the tilde will be
+replaced with the value of \\$HOME (on this system: $HOME)
+before being passed to 'tar'.
+
+Inside the created .tgz file, all paths will be absolute, even
+the paths that were relative in the FILELIST.
+
+The directory DESTDIR will be created if it does not exist.
+
+The name of the destination file will be in the format:
+    YYYYMMDDhhmmss_rnd.tgz
+where 'YYYYMMDDhhmmss' is the creation time of the .tgz file
+and 'rnd' is a random 3-character string consisting of numerals
+and/or lowercase letters. If a third argument 'PREFIX' is
+specified, the filename will be:
+    PREFIX_YYYYMMDDhhmmss_rnd.tgz
+
+Example:
+
+With a file 'filelist.txt' containing the following two lines:
+    one.txt
+    two.txt
+
+The command and its output look like this:
+    user@host ~ $ tgz_files filelist.txt .
+    /home/user/one.txt
+    /home/user/two.txt
+    /home/user/20140519142819_5sp.tgz
+DOCSTRING
+
+require timestamp_id
+
+fileList=$(readlink -f $1)
+if [ ! -f "$fileList" ]; then
+    exitWith 1 "Error: file \"$fileList\" does not exist."
+fi
+
+destDir=$(readlink -f $2)
+if [ ! -d "$destDir" ]; then
+    mkdir -p "destDir$"
+    exitOnError 1 "Could not create directory \"$destDir\""
+fi
+
+if [ -n "$3" ]; then
+    prefix=$3_
+fi
+
+tsid=$(timestamp_id)
+exitOnError 1 "Error while running \"timestamp_id\""
+
+destFile="$destDir/$prefix$tsid.tgz"
+#cd
+
+homedir_escaped=$(sed 's/\//\\\//g' <<<$HOME)
+cat "$fileList" | sed "s/^~/$homedir_escaped/g" | xargs -I{} readlink -f "{}" | xargs tar cpvz -P -C / -f $destFile
+exitOnError 1 "while creating tarball: \"$destFile\" from file list: \"$fileList\""
+
+echo $(readlink -f $destFile)

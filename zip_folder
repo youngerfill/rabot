@@ -1,0 +1,63 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+minNumArgs 2 $#
+
+: << DOCSTRING
+Usage: $(basename "$0") FOLDER DESTDIR [PREFIX]
+
+'$(basename "$0")' compresses the directory FOLDER to a .zip file and saves
+the latter in the directory DESTDIR.
+
+The filename has the following pattern:
+
+    'NAME_YYYMMDDhhmmss_RND.zip'
+
+where 'NAME' is either equal to the name of 'FOLDER' or to 'PREFIX' if the
+latter argument is given, 'YYYMMDDhhmmss' is the current datetime and 'RND'
+is a 3-character random alphanumerical string.
+
+The directory DESTDIR will be created if it does not exist.
+
+Paths inside the .zip file will be relative to the current working directory.
+
+Example:
+
+    user@host ~ $ zip_folder somedir/myfolder .
+    /home/user/myfolder_20140522224809_m94.zip
+DOCSTRING
+
+require timestamp_id
+require zip
+
+if [ ! -d "$1" ]; then
+    exitWith 1 "Error: the folder '$1' doesn't exist"
+fi
+
+if [ ! -d "$2" ]; then
+    exitWith 1 "Error: the destination folder '$2' doesn't exist"
+fi
+
+if [ ! -w "$2" ]; then
+    exitWith 1 "Error: the destination folder '$2' isn't writable"
+fi
+
+tsid=$(timestamp_id)
+exitOnError 1 "The script 'timestamp_id' returned an error."
+
+prefix=${3:-$(basename $(readlink -f $1))}
+exitOnError 1 "Could not set the prefix."
+
+destFile=${2:-.}/${prefix}_$tsid.zip
+zip -rq "$destFile" "$1"
+exitOnError 1 "The command 'zip -r $destFile $1' returned an error"
+
+echo $(readlink -f $destFile)
+

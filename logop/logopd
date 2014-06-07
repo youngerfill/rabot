@@ -1,0 +1,65 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage:
+    first form:
+        $(basename "$0") DIR COMMAND [ARG1]...
+
+    second form:
+        COMMAND [ARG1]... | $(basename "$0") DIR
+
+The behavior of '$(basename "$0")' is similar to 'logop', with the
+following differences:
+
+- An extra 'DIR' argument will override the value provided by
+  'rabot_vars logDir'.
+
+- The symlink called 'latest.txt' in the default log directory will
+  not be updated. Instead, a 'latest.txt' symlink is created/updated
+  in the 'DIR' directory.
+
+For further info, see: 'logop --help'
+
+A minimal sample of the first form:
+
+    user@host ~ $ logopd mylogdir echo Hello
+    ==== Start log: 2014-05-23 22:37:40
+    ==== Logscript: /home/user/tools/rabot/logop/logopd
+    ==== Command: echo Hello
+    ==== Working directory: /home/user
+    ==== Logfile: /home/user/mylogdir/20140523223740_8yo.txt
+
+    Hello
+
+    ==== Exit status: 0
+    ==== Elapsed: 0.00 seconds
+    ==== End log: 2014-05-23 22:37:40
+
+A minimal sample of the second form:
+
+    user@host ~ $ echo Hello | logopd mylogdir
+    ==== Start log: 2014-05-23 22:38:17
+    ==== Logscript: /home/user/tools/rabot/logop/logopd
+    ==== Working directory: /home/user
+    ==== Logfile: /home/user/mylogdir/20140523223817_0r0.txt
+
+    Hello
+
+    ==== Elapsed: 0.00 seconds
+    ==== End log: 2014-05-23 22:38:17
+DOCSTRING
+
+require logop
+
+export logDir=$1
+shift
+. logop $*
+

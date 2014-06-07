@@ -1,0 +1,43 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: GREPCOMMAND | $(basename "$0")
+
+'$(basename "$0")' takes the output of a 'grep' command
+(or a command with similar output) and opens it in the
+'quickfix' window of a 'vim' session.
+
+This allows for easy navigation through all matching
+lines found by GREPCOMMAND.
+
+The 'quickfix' window will assume the following format
+for the output lines:
+
+    '%f:%l:%m'
+
+where '%f' is the filename, '%l' is the linenumber and
+'%m' is the rest of the line.
+
+If 'grep' is used as the command, the option '-n' must
+be used in order to produce this format.
+
+Example:
+
+     grp rabot . | glon
+
+This makes use of the 'grep' wrapper script called 'grp'.
+Vim will be started and the quickfix window will be
+displayed, containing a list of all occurences of the
+search term 'rabot' found in files of the current working
+directory and its subdirectories.
+DOCSTRING
+
+vim -c 'set errorformat=%f:%l:%m' -c 'cb!' -c 'copen' -

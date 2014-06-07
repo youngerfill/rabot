@@ -1,0 +1,34 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: FINDCOMMAND | $(basename "$0")
+
+'$(basename "$0")' takes the output of a 'find' command
+(or a command with similar output) and opens it in the
+'quickfix' window of a 'vim' session.
+
+This allows for easy navigation through all files found
+by FINDCOMMAND.
+
+The 'quickfix' window will assume that the output
+contains nothing but filenames, as 'vim' will be
+started with 'errorformat' equal to '%f'.
+
+Example:
+
+    find . -type f | flon
+
+This will open 'vim' and display the 'quickfix' window.
+The latter window will contain a list of every file in
+the current working directory and all its subdirectories.
+DOCSTRING
+
+vim -c 'set errorformat=%f' -c 'cb!' -c 'copen' -

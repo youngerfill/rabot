@@ -1,0 +1,54 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename $0)
+
+Compress the contents of the Current Working Directory (CWD)
+to a .zip file stored in its parent directory.
+
+'$(basename $0)' performs the following actions:
+
+1. Remove temporary files from the CWD by running the script
+   'clean_this'.
+
+2. 'cd' into the parent directory of the CWD and run
+   the script 'zip_folder' on the former CWD.
+
+Example:
+
+    user@host ~/myfolder $ zip_this
+    /home/user/myfolder_20140522225226_0fg.zip
+DOCSTRING
+
+require clean_this
+require zip_folder
+
+folderPath=$(pwd)
+folderName=$(basename $folderPath)
+fullScriptPath=$(readlink -f $0)
+
+# 1.
+clean_this
+exitOnError 1 "The script 'clean_this' returned an error."
+
+# 2.
+cd ..
+exitOnError 1 "Could not perform 'cd ..'"
+
+if [ "$(pwd)" = "$folderPath" ]; then
+  echo $fullScriptPath: Error: could not cd into parent directory of \'$folderPath\'>&2
+  exit -1
+fi
+
+zip_folder "$folderName" .
+exitOnError 1 "The script 'tgz_folder' returned an error"
+
+

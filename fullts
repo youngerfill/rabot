@@ -1,0 +1,23 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") [FILE]
+
+'$(basename "$0")' displays the current time in the format:
+'YYYMMDDhhmmss'. If the argument FILE is given, it displays
+the timestamp of FILE in this format.
+DOCSTRING
+
+if [ -z "$1" ]; then
+  date +%Y%m%d%H%M%S
+else
+  date -r "$1" +%Y%m%d%H%M%S
+fi

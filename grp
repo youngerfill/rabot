@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Based upon Jonathan Hartley's grep customization
+# http://stackoverflow.com/a/7646963
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") [OPTIONS] REGEX DIRECTORY
+
+'$(basename "$0")' wraps the 'grep' tool by adding the options: '-nrIP'.
+
+This means, respectively: display line numbers, search recursively
+through the directory tree, skip binary files and use the PCRE regex
+flavor.
+
+Additionally, directories named '.git', '.hg', '.svn' or '.bzr'
+will be skipped during the search, and output will be displayed in
+colour.
+DOCSTRING
+
+grep -nrIP --color --exclude-dir=\.bzr --exclude-dir=\.git --exclude-dir=\.hg --exclude-dir=\.svn $*

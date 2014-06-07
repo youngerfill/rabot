@@ -1,0 +1,44 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") VARNAME
+
+'$(basename "$0")' collects some configuration settings of 'rabot'.
+
+It will output the value of the variable whose name is specified
+as a command-line argument.
+
+These values can be overridden outside 'rabot_vars' by redefining
+the variable before calling this script. For example:
+
+    $ rabot_vars logDir
+    MyNormalLogDir
+    $ export logDir=MySpecialLogDir
+    $ rabot_vars logDir
+    MySpecialLogDir
+
+For a list of all variables defined by '$(basename "$0")' and
+their values, see the source code of the script.
+DOCSTRING
+
+: ${rabotDir:="$(dirname $0)"}
+
+: ${logDir:="$HOME/log"}
+
+: ${backupDir:="$HOME/Dropbox/bu_projects"}
+
+: ${gitRemoteDir:="$HOME/Dropbox/git"}
+
+: ${recursiveRequire:=true}
+
+if [ -n "$1" ]; then
+    eval echo \$$1
+fi

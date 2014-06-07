@@ -1,0 +1,50 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename $0)
+
+'$(basename $0)' performs the following actions:
+
+1. Check for an executable file named 'clean' in the
+   Current Working Directory (CWD) and run it, if found.
+
+2. Check for a file named 'clean.txt' in the CWD and
+   - if found - delete all files and directories named in
+   this file.
+
+3. Check for a file named 'Makefile' in the CWD and
+   - if found - run the command 'make clean'.
+
+4. Check for subdirectories of the CWD matching "zz_*"
+   and delete them - if found. Only first-level subdirs are
+   considered, matching directories at deeper levels are
+   left untouched.
+DOCSTRING
+
+# 1. Run the 'clean' script, if any
+if [ -x "./clean" ]; then
+    ./clean
+fi
+
+# 2. Delete files named in 'clean.txt', if any
+if [ -f "./clean.txt" ]; then
+    cat clean.txt | xargs -I{} rm -rf ./"{}"
+fi
+
+# 3. Build the 'clean' target of 'Makefile', if any
+if [ -f "Makefile" ]; then
+    make clean
+fi
+
+# 4. Remove all directories named "zz_*"
+while read line; do
+    rm -rf "$line"
+done < <(find . -maxdepth 1 -type d -name zz_\*)

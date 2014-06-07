@@ -1,0 +1,33 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp "$1"
+
+minNumArgs 2 $#
+
+: << DOCSTRING
+Usage: $(basename "$0") DIR COMMAND [ARG1]...
+
+'$(basename "$0")' performs COMMAND with its arguments in
+every directory of the tree rooted in DIR.
+
+Example:
+
+    user@host / $ walkdird ~ pwd
+    /home/user
+    /home/user/mydir
+    /home/user/myotherdir
+DOCSTRING
+
+require walkdir
+
+cd "$1"
+exitOnError 1 "Error: could not perform 'cd \"$1\"'"
+
+shift
+. walkdir $*

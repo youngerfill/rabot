@@ -1,0 +1,206 @@
+#!/bin/bash
+
+[ -n "$RABOT_COMMON" ] && return || readonly RABOT_COMMON=1
+
+
+function exitWith
+{
+    if [ -n "$2" ]; then
+        echo "$2" >&2
+    fi
+    if [ -n "$1" ]; then
+        exit "$1"
+    else
+        exit 1
+    fi
+}
+
+
+function exitOnError
+{
+    exitStatus="$?"
+
+    if [ "$exitStatus" -ne "0" ]; then
+        exitWith ${1:-1} "Error: ${2:-unknown}"
+    fi
+}
+
+
+function isSubdirOf
+{
+    if [ -z "$1" -o -z "$2" ]; then
+        exitWith 1 "Error: the function isSubdirOf requires 2 arguments."
+    fi
+
+    if [ ! -d "$(dirname $1)" ]; then
+        exitWith 1 "Error: the parent dir of '$1' doesn't exist"
+    fi
+
+    if [ ! -d "$(dirname $2)" ]; then
+        exitWith 1 "Error: the parent dir of '$2' doesn't exist"
+    fi
+
+    realDir1="$(readlink -f $1)"
+    realDir2="$(readlink -f $2)"
+
+    lengthMatched=$(expr match "$realDir1" "$realDir2")
+    if [ $lengthMatched -eq ${#realDir2} ]; then
+        echo true
+    else
+        echo false
+    fi
+}
+
+
+function require
+{
+    if [ -z "$1" ]; then
+        exitWith 1  "Error: 'require' requires an argument"
+    fi
+
+    toolsDirtree="$(rabot_vars rabotDir)"
+    recursiveRequire="$(rabot_vars recursiveRequire)"
+    : ${recursiveRequire:=false}
+
+    function append
+    {
+        echo "$1 $2"
+    }
+
+    function has
+    {
+        tr ' ' $'\n' <<<"$1" | grep ^"$2"$ > /dev/null 2>&1
+        if [ "$?" -eq "0" ]; then
+            echo true
+        else
+            echo false
+        fi
+    }
+
+    function require_core
+    {
+        if $(has "$2" "$1"); then
+            exitWith 1 "Error: circular dependency detected: $(sed "s/ / -> /g" <<<"$2") -> $1"
+        fi
+
+        pathToCommand="$(which $1)"
+        exitOnError 1 "Required command: '$1' not found"
+
+        if "$recursiveRequire"; then
+            if "$(isSubdirOf "$(dirname "$pathToCommand")" "$toolsDirtree")"; then
+                while read line; do
+                    toolName=$(grep -o '\S\S*$' <<<$line)
+                    require_core "$toolName" "$(append "$2" "$1")"
+                done < <(grep "^require\s\s*\S\S*\s*$" "$pathToCommand")
+            fi
+        fi
+    }
+
+    require_core "$1" "$(basename $(readlink -f "$0"))"
+}
+
+
+
+# To be used at the command line:
+#   $ . rabot_common
+#   $ showReq scriptName
+function showReq
+{
+    if [ -z "$1" ]; then
+        exitWith 1  "Error: 'showReq' requires an argument"
+    fi
+
+    toolsDirtree="$(rabot_vars rabotDir)"
+
+    function processRequirements
+    {
+        while read line; do
+            toolName=$(grep -o '\S\S*$' <<<$line)
+            showReq_core "$toolName"
+        done < <(grep "^require\s\s*\S\S*\s*$" "$1")
+    }
+
+    function showReq_core
+    {
+        pathToCommand="$(which $1)"
+        if [ "$?" -ne "0" ]; then
+            echo "'$1' not found" >&2
+        else
+            parentDirOfCommand="$(dirname "$pathToCommand")"
+
+            if "$(isSubdirOf "$parentDirOfCommand" "$toolsDirtree")"; then
+                echo ${pathToCommand:$(expr $(expr match $pathToCommand $(dirname $toolsDirtree)) + 1)}
+                processRequirements "$pathToCommand"
+            else
+                echo $(basename "$pathToCommand")
+            fi
+        fi
+    }
+
+    processRequirements "$1"
+}
+
+
+function rootOnly
+{
+  if [ "$EUID" -ne 0 ]; then
+    exitWith 1 "You must be root"
+  fi
+}
+
+
+function showHelp
+{
+    rgxbegin="^ *: *<< *DOCSTRING *$"
+    rgxend="^ *DOCSTRING *$"
+    printLine=false
+    IFS=''
+
+    while read line; do
+
+        if [[ "$line" =~ $rgxend ]]; then
+            printLine=false
+        fi
+
+        if $printLine; then
+            # eval is used to allow variable
+            # substitution in docstring
+            eval echo "\"$line\""
+        fi
+
+        if [[ "$line" =~ $rgxbegin ]]; then
+            printLine=true
+        fi
+
+    done < "$0"
+
+    exit 0
+}
+
+
+function checkForHelp
+{
+    if [ "$1" = "--help" ]; then
+        showHelp
+    fi
+}
+
+function oneInstance
+{
+    LOCKFILE="/var/lock/$(basename "$0")"
+    LOCKFD=99
+
+    eval "exec $LOCKFD>\"$LOCKFILE\""
+    trap "flock -u $LOCKFD; flock -xn $LOCKFD && rm -f $LOCKFILE" EXIT;
+
+    flock -xn $LOCKFD
+    exitOnError 1 "Error: An instance of this script is already running."
+}
+
+function minNumArgs
+{
+    if [ "$2" -lt "$1" ]; then
+        echo "$(basename "$0"): missing operand"
+        exitWith 1 "Try '$(basename "$0") --help' for more information."
+    fi
+}
