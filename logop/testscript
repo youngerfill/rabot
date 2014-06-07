@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo Some message
-echo Some error >&2
-
