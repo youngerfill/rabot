@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -17,29 +17,29 @@ to a .tgz file stored in its parent directory.
 '$(basename "$0")' performs the following actions:
 
 1. Remove temporary files from the CWD by running the script
-   'clean_this'.
+   'clean-this'.
 
 2. 'cd' into the parent directory of the CWD and run
-   the script 'tgz_folder' on the former CWD.
+   the script 'tgz-folder' on the former CWD.
 
 Example:
 
-    user@host ~/myfolder $ tgz_this
+    user@host ~/myfolder $ tgz-this
     /home/user/myfolder_20140522221601_5ve.tgz
 
-See also: 'tgz_folder', 'tgz_files'
+See also: 'tgz-folder', 'tgz-files'
 DOCSTRING
 
-require clean_this
-require tgz_folder
+require clean-this
+require tgz-folder
 
 folderPath=$(pwd)
 folderName=$(basename $folderPath)
 fullScriptPath=$(readlink -f "$0")
 
 # 1.
-clean_this
-exitOnError 1 "The script 'clean_this' returned an error."
+clean-this
+exitOnError 1 "The script 'clean-this' returned an error."
 
 cd ..
 exitOnError 1 "Could not perform 'cd ..'"
@@ -49,6 +49,6 @@ if [ "$(pwd)" = "$folderPath" ]; then
   exit -1
 fi
 
-tgz_folder "$folderName" .
-exitOnError 1 "The script 'tgz_folder' returned an error"
+tgz-folder "$folderName" .
+exitOnError 1 "The script 'tgz-folder' returned an error"
 

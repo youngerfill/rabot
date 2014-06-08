@@ -8,7 +8,7 @@ Rabot
 Introduction
 ------------
 
-Rabot (an acronym for "**R**\ abot: a **b**\ unch **o**\ f **t**\ ools") is a collection of bash scripts.
+Rabot (an acronym for "**R**\ abot: **a** **b**\ unch **o**\ f **t**\ ools") is a collection of bash scripts.
 
 They can be installed simply by downloading them and adding the ``rabot`` directory to the ``PATH`` variable in your ``.bashrc`` file. There's a script called ``addtree2path`` in ``rabot`` to do just that.
 If you add the following line to ``.bashrc``:
@@ -23,34 +23,34 @@ Every executable script in ``rabot`` has its own help function. You get the help
 
 The rest of this document consists of the ``--help`` output of the scripts.
 
-bu_this
+bu-this
 -------
 ::
 
-  Usage: bu_this
+  Usage: bu-this
 
   Summary: Compress the contents of the Current Working Directory (CWD)
            into a .tgz file saved in a dedicated backup directory.
 
-  'bu_this' performs the following actions:
+  'bu-this' performs the following actions:
 
-  1. Obtain the path to the destination directory by invoking 'rabot_vars backupDir'
+  1. Obtain the path to the destination directory by invoking 'rabot-vars backupDir'
      and create this directory if it doesn't already exist.
 
-  2. Run the script 'tgz_this' to compress the contents of the CWD into a .tgz file
+  2. Run the script 'tgz-this' to compress the contents of the CWD into a .tgz file
      located in the parent directory of the CWD.
 
   3. 'mv' this .tgz file to the destination directory.
 
-  See also: 'tgz_this', 'zip_this', 'clean_this'
+  See also: 'tgz-this', 'zip-this', 'clean-this'
 
-clean_this
+clean-this
 ----------
 ::
 
-  Usage: clean_this
+  Usage: clean-this
 
-  'clean_this' performs the following actions:
+  'clean-this' performs the following actions:
 
   1. Check for an executable file named 'clean' in the
      Current Working Directory (CWD) and run it, if found.
@@ -128,7 +128,7 @@ fullts
   'YYYMMDDhhmmss'. If the argument FILE is given, it displays
   the timestamp of FILE in this format.
 
-  See also: 'timestamp_id'
+  See also: 'timestamp-id'
 
 glon
 ----
@@ -210,13 +210,13 @@ logop
   second form is used however, this information will not contain the command
   string that has been invoked nor the exit status of the command.
 
-  The logfile is saved in the folder obtained from invoking 'rabot_vars logDir'.
+  The logfile is saved in the folder obtained from invoking 'rabot-vars logDir'.
   The filename of the logfile has the following form:
 
       YYYYMMDDhhmmss_RND.txt
 
   The part before the extension is the current time and a random alphanumerical
-  string, as explained in 'timestamp_id --help'.
+  string, as explained in 'timestamp-id --help'.
 
   In the log directory a symbolic link called 'latest' will be created or updated
   pointing to the newly created logfile.
@@ -268,7 +268,7 @@ logopd
   following differences:
 
   - An extra 'DIR' argument will override the value provided by
-    'rabot_vars logDir'.
+    'rabot-vars logDir'.
 
   - The symlink called 'latest.txt' in the default log directory will
     not be updated. Instead, a 'latest.txt' symlink is created/updated
@@ -357,27 +357,27 @@ logopf
 
   See also: 'logop', 'logopd'
 
-rabot_vars
+rabot-vars
 ----------
 ::
 
-  Usage: rabot_vars VARNAME
+  Usage: rabot-vars VARNAME
 
-  'rabot_vars' collects some configuration settings of 'rabot'.
+  'rabot-vars' collects some configuration settings of 'rabot'.
 
   It will output the value of the variable whose name is specified
   as a command-line argument.
 
-  These values can be overridden outside 'rabot_vars' by redefining
+  These values can be overridden outside 'rabot-vars' by redefining
   the variable before calling this script. For example:
 
-      $ rabot_vars logDir
+      $ rabot-vars logDir
       MyNormalLogDir
       $ export logDir=MySpecialLogDir
-      $ rabot_vars logDir
+      $ rabot-vars logDir
       MySpecialLogDir
 
-  For a list of all variables defined by 'rabot_vars' and
+  For a list of all variables defined by 'rabot-vars' and
   their values, see the source code of the script.
 
   If you are a first-time user of rabot, you probably might want to edit
@@ -397,13 +397,13 @@ randid
       user@host ~ $ randid 5
       mx2ft
 
-tgz_files
+tgz-files
 ---------
 ::
 
-  Usage: tgz_files FILELIST DESTDIR [PREFIX]
+  Usage: tgz-files FILELIST DESTDIR [PREFIX]
 
-  'tgz_files' reads the file FILELIST and creates a .tgz file
+  'tgz-files' reads the file FILELIST and creates a .tgz file
   (with the command 'tar') containing all files and directories
   listed in FILELIST.
 
@@ -435,20 +435,20 @@ tgz_files
       two.txt
 
   The command and its output look like this:
-      user@host ~ $ tgz_files filelist.txt .
+      user@host ~ $ tgz-files filelist.txt .
       /home/user/one.txt
       /home/user/two.txt
       /home/user/20140519142819_5sp.tgz
 
-  See also: 'tgz_folder', 'tgz_this'
+  See also: 'tgz-folder', 'tgz-this'
 
-tgz_folder
+tgz-folder
 ----------
 ::
 
-  Usage: tgz_folder FOLDER DESTDIR [PREFIX]
+  Usage: tgz-folder FOLDER DESTDIR [PREFIX]
 
-  'tgz_folder' compresses the directory FOLDER to a .tgz file and saves
+  'tgz-folder' compresses the directory FOLDER to a .tgz file and saves
   the latter in the directory DESTDIR.
 
   The filename has the following pattern:
@@ -465,42 +465,42 @@ tgz_folder
 
   Example:
 
-      user@host ~ $ tgz_folder somedir/myfolder .
+      user@host ~ $ tgz-folder somedir/myfolder .
       /home/user/myfolder_20140522224511_fw0.tgz
 
-  See also: 'tgz_files', 'tgz_this'
+  See also: 'tgz-files', 'tgz-this'
 
-tgz_this
+tgz-this
 --------
 ::
 
-  Usage: tgz_this
+  Usage: tgz-this
 
   Compress the contents of the Current Working Directory (CWD)
   to a .tgz file stored in its parent directory.
 
-  'tgz_this' performs the following actions:
+  'tgz-this' performs the following actions:
 
   1. Remove temporary files from the CWD by running the script
-     'clean_this'.
+     'clean-this'.
 
   2. 'cd' into the parent directory of the CWD and run
-     the script 'tgz_folder' on the former CWD.
+     the script 'tgz-folder' on the former CWD.
 
   Example:
 
-      user@host ~/myfolder $ tgz_this
+      user@host ~/myfolder $ tgz-this
       /home/user/myfolder_20140522221601_5ve.tgz
 
-  See also: 'tgz_folder', 'tgz_files'
+  See also: 'tgz-folder', 'tgz-files'
 
-timestamp_id
+timestamp-id
 ------------
 ::
 
-  Usage: timestamp_id
+  Usage: timestamp-id
 
-  'timestamp_id' will print the current time plus a
+  'timestamp-id' will print the current time plus a
   3-character random alphanumerical string in the following way:
 
       YYYYMMDDhhmmss_RND
@@ -510,7 +510,7 @@ timestamp_id
 
   Example:
 
-      user@host ~ $ timestamp_id
+      user@host ~ $ timestamp-id
       20140328133629_1oy
 
   See also: 'fullts', 'randid'
@@ -552,13 +552,13 @@ walkdird
 
   See also: 'walkdir'
 
-zip_folder
+zip-folder
 ----------
 ::
 
-  Usage: zip_folder FOLDER DESTDIR [PREFIX]
+  Usage: zip-folder FOLDER DESTDIR [PREFIX]
 
-  'zip_folder' compresses the directory FOLDER to a .zip file and saves
+  'zip-folder' compresses the directory FOLDER to a .zip file and saves
   the latter in the directory DESTDIR.
 
   The filename has the following pattern:
@@ -575,31 +575,31 @@ zip_folder
 
   Example:
 
-      user@host ~ $ zip_folder somedir/myfolder .
+      user@host ~ $ zip-folder somedir/myfolder .
       /home/user/myfolder_20140522224809_m94.zip
 
-  See also: 'zip_this', 'tgz_folder', 'tgz_this'
+  See also: 'zip-this', 'tgz-folder', 'tgz-this'
 
-zip_this
+zip-this
 --------
 ::
 
-  Usage: zip_this
+  Usage: zip-this
 
   Compress the contents of the Current Working Directory (CWD)
   to a .zip file stored in its parent directory.
 
-  'zip_this' performs the following actions:
+  'zip-this' performs the following actions:
 
   1. Remove temporary files from the CWD by running the script
-     'clean_this'.
+     'clean-this'.
 
   2. 'cd' into the parent directory of the CWD and run
-     the script 'zip_folder' on the former CWD.
+     the script 'zip-folder' on the former CWD.
 
   Example:
 
-      user@host ~/myfolder $ zip_this
+      user@host ~/myfolder $ zip-this
       /home/user/myfolder_20140522225226_0fg.zip
 
-  See also: 'zip_folder', 'tgz_this'
+  See also: 'zip-folder', 'tgz-this'

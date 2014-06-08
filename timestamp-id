@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -21,7 +21,7 @@ and 'RND' is the random string (produced by 'randid').
 
 Example:
 
-    user@host ~ $ timestamp_id
+    user@host ~ $ timestamp-id
     20140328133629_1oy
 
 See also: 'fullts', 'randid'

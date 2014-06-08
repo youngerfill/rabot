@@ -58,8 +58,8 @@ function require
         exitWith 1  "Error: 'require' requires an argument"
     fi
 
-    toolsDirtree="$(rabot_vars rabotDir)"
-    recursiveRequire="$(rabot_vars recursiveRequire)"
+    toolsDirtree="$(rabot-vars rabotDir)"
+    recursiveRequire="$(rabot-vars recursiveRequire)"
     : ${recursiveRequire:=false}
 
     function append
@@ -102,7 +102,7 @@ function require
 
 
 # To be used at the command line:
-#   $ . rabot_common
+#   $ . rabot-common
 #   $ showReq scriptName
 function showReq
 {
@@ -110,7 +110,7 @@ function showReq
         exitWith 1  "Error: 'showReq' requires an argument"
     fi
 
-    toolsDirtree="$(rabot_vars rabotDir)"
+    toolsDirtree="$(rabot-vars rabotDir)"
 
     function processRequirements
     {

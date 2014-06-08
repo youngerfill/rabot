@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -15,7 +15,7 @@ Usage: $(basename "$0") [FILE]
 'YYYMMDDhhmmss'. If the argument FILE is given, it displays
 the timestamp of FILE in this format.
 
-See also: 'timestamp_id'
+See also: 'timestamp-id'
 DOCSTRING
 
 if [ -z "$1" ]; then

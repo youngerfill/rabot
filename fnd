@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -25,7 +25,7 @@ names=".git .svn .hg .bzr CVS"
 expression=
 
 while read name; do
-   expression="$expression ""! -path */$name ! -path */$name/*"
+   expression="$expression ! -path */$name ! -path */$name/*"
 done < <(tr ' ' $'\n' <<< "$names")
 
 find $* $expression
