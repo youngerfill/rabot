@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -20,7 +20,7 @@ The behavior of '$(basename "$0")' is similar to 'logop', with the
 following differences:
 
 - An extra 'DIR' argument will override the value provided by
-  'rabot_vars logDir'.
+  'rabot-vars logDir'.
 
 - The symlink called 'latest.txt' in the default log directory will
   not be updated. Instead, a 'latest.txt' symlink is created/updated

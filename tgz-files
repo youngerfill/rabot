@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -44,15 +44,15 @@ With a file 'filelist.txt' containing the following two lines:
     two.txt
 
 The command and its output look like this:
-    user@host ~ $ tgz_files filelist.txt .
+    user@host ~ $ tgz-files filelist.txt .
     /home/user/one.txt
     /home/user/two.txt
     /home/user/20140519142819_5sp.tgz
 
-See also: 'tgz_folder', 'tgz_this'
+See also: 'tgz-folder', 'tgz-this'
 DOCSTRING
 
-require timestamp_id
+require timestamp-id
 
 fileList=$(readlink -f $1)
 if [ ! -f "$fileList" ]; then
@@ -69,8 +69,8 @@ if [ -n "$3" ]; then
     prefix=$3_
 fi
 
-tsid=$(timestamp_id)
-exitOnError 1 "Error while running \"timestamp_id\""
+tsid=$(timestamp-id)
+exitOnError 1 "Error while running \"timestamp-id\""
 
 destFile="$destDir/$prefix$tsid.tgz"
 #cd

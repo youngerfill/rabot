@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -29,13 +29,13 @@ Paths inside the .zip file will be relative to the current working directory.
 
 Example:
 
-    user@host ~ $ zip_folder somedir/myfolder .
+    user@host ~ $ zip-folder somedir/myfolder .
     /home/user/myfolder_20140522224809_m94.zip
 
-See also: 'zip_this', 'tgz_folder', 'tgz_this'
+See also: 'zip-this', 'tgz-folder', 'tgz-this'
 DOCSTRING
 
-require timestamp_id
+require timestamp-id
 require zip
 
 if [ ! -d "$1" ]; then
@@ -50,8 +50,8 @@ if [ ! -w "$2" ]; then
     exitWith 1 "Error: the destination folder '$2' isn't writable"
 fi
 
-tsid=$(timestamp_id)
-exitOnError 1 "The script 'timestamp_id' returned an error."
+tsid=$(timestamp-id)
+exitOnError 1 "The script 'timestamp-id' returned an error."
 
 prefix=${3:-$(basename $(readlink -f $1))}
 exitOnError 1 "Could not set the prefix."

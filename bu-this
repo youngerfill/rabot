@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -16,29 +16,29 @@ Summary: Compress the contents of the Current Working Directory (CWD)
 
 '$(basename "$0")' performs the following actions:
 
-1. Obtain the path to the destination directory by invoking 'rabot_vars backupDir'
+1. Obtain the path to the destination directory by invoking 'rabot-vars backupDir'
    and create this directory if it doesn't already exist.
 
-2. Run the script 'tgz_this' to compress the contents of the CWD into a .tgz file
+2. Run the script 'tgz-this' to compress the contents of the CWD into a .tgz file
    located in the parent directory of the CWD.
 
 3. 'mv' this .tgz file to the destination directory.
 
-See also: 'tgz_this', 'zip_this', 'clean_this'
+See also: 'tgz-this', 'zip-this', 'clean-this'
 DOCSTRING
 
-require tgz_this
-require rabot_vars
+require tgz-this
+require rabot-vars
 
 # 1.
-destDir=$(rabot_vars backupDir)
+destDir=$(rabot-vars backupDir)
 
 mkdir -p "$destDir"
 exitOnError 1 "Error: the command 'mkdir -p \"$destDir\"' returned an error"
 
 # 2.
-tgzFile=$(tgz_this)
-exitOnError 1 "The script 'tgz_this' returned an error"
+tgzFile=$(tgz-this)
+exitOnError 1 "The script 'tgz-this' returned an error"
 
 if [ ! -f "$tgzFile" ]; then
     exitWith 1 "Error: the file '$tgzFile' doesn't exist"

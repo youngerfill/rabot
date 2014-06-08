@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. rabot_common
+. rabot-common
 if [ "$?" -ne "0" ]; then
-  echo "$0: Error while sourcing rabot_common" >&2
+  echo "$0: Error while sourcing rabot-common" >&2
   exit 1
 fi
 
@@ -31,13 +31,13 @@ adds a header and a footer section with supplementary information. If the
 second form is used however, this information will not contain the command
 string that has been invoked nor the exit status of the command.
 
-The logfile is saved in the folder obtained from invoking 'rabot_vars logDir'.
+The logfile is saved in the folder obtained from invoking 'rabot-vars logDir'.
 The filename of the logfile has the following form:
 
     YYYYMMDDhhmmss_RND.txt
 
 The part before the extension is the current time and a random alphanumerical
-string, as explained in 'timestamp_id --help'.
+string, as explained in 'timestamp-id --help'.
 
 In the log directory a symbolic link called 'latest' will be created or updated
 pointing to the newly created logfile.
@@ -75,17 +75,17 @@ A minimal sample of the second form:
 See also: 'logopd', 'logopf'
 DOCSTRING
 
-require timestamp_id
+require timestamp-id
 require fullts
-require logop_core
-require rabot_vars
+require logop-core
+require rabot-vars
 
-logDir="$(rabot_vars logDir)"
-fileName="$(timestamp_id).txt"
+logDir="$(rabot-vars logDir)"
+fileName="$(timestamp-id).txt"
 logFile="$logDir/$fileName"
 
 # Update symlink 'latest.txt' to point to latest logfile
 ln -sf "$fileName" "$logDir/latest.txt"
 
-. logop_core $*
+. logop-core $*
 
