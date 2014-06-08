@@ -151,10 +151,10 @@ grp
 
   This means, respectively: display line numbers, search recursively
   through the directory tree, skip binary files and use the PCRE regex
-  flavor.
+  flavour.
 
-  Additionally, directories named '.git', '.hg', '.svn' or '.bzr'
-  will be skipped during the search, and output will be displayed in
+  Additionally, directories named '.git', '.hg', '.svn', '.bzr' or 'CVS'
+  will be skipped during the search and output will be displayed in
   colour.
 
   See also: 'fnd'
