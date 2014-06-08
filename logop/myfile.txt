@@ -1,8 +1,0 @@
-==== Start log: 2014-05-17 03:18:22
-==== Logscript: /home/wezzel/tools/rabot/logop/logopf
-==== Logfile: /home/wezzel/tools/rabot/logop/myfile.txt
-
-fqsf
-sfq
-
-==== End log: 2014-05-17 03:18:29

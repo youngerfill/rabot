@@ -71,6 +71,8 @@ A minimal sample of the second form:
 
     ==== Elapsed: 0.00 seconds
     ==== End log: 2014-05-23 22:34:24
+
+See also: 'logopd', 'logopf'
 DOCSTRING
 
 require timestamp_id

@@ -26,6 +26,8 @@ Example:
 
     user@host ~/myfolder $ tgz_this
     /home/user/myfolder_20140522221601_5ve.tgz
+
+See also: 'tgz_folder', 'tgz_files'
 DOCSTRING
 
 require clean_this

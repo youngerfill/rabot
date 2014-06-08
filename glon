@@ -38,6 +38,8 @@ Vim will be started and the quickfix window will be
 displayed, containing a list of all occurences of the
 search term 'rabot' found in files of the current working
 directory and its subdirectories.
+
+See also: 'flon'
 DOCSTRING
 
 vim -c 'set errorformat=%f:%l:%m' -c 'cb!' -c 'copen' -

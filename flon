@@ -29,6 +29,8 @@ Example:
 This will open 'vim' and display the 'quickfix' window.
 The latter window will contain a list of every file in
 the current working directory and all its subdirectories.
+
+See also: 'glon'
 DOCSTRING
 
 vim -c 'set errorformat=%f' -c 'cb!' -c 'copen' -

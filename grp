@@ -23,6 +23,8 @@ flavor.
 Additionally, directories named '.git', '.hg', '.svn' or '.bzr'
 will be skipped during the search, and output will be displayed in
 colour.
+
+See also: 'fnd'
 DOCSTRING
 
 grep -nrIP --color --exclude-dir=\.bzr --exclude-dir=\.git --exclude-dir=\.hg --exclude-dir=\.svn $*

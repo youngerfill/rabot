@@ -28,7 +28,7 @@ following differences:
 
 - No symlink 'latest.txt' is created or updated.
 
-For further info, see: 'logop --help'
+For more info, see: 'logop --help'
 
 A minimal sample of the first form:
 
@@ -57,6 +57,8 @@ A minimal sample of the second form:
 
     ==== Elapsed: 0.00 seconds
     ==== End log: 2014-05-23 22:43:18
+
+See also: 'logop', 'logopd'
 DOCSTRING
 
 logFile="$1"

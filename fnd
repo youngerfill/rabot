@@ -1,0 +1,31 @@
+#!/bin/bash
+
+. rabot_common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot_common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") ['find' arguments]
+
+'$(basename "$0")' wraps the 'find' tool by adding options that make it
+exclude directories with the following names:
+
+    '.git', '.hg', '.svn', '.bzr' and 'CVS'
+
+See also: 'fnd0', 'grp'
+DOCSTRING
+
+require find
+
+names=".git .svn .hg .bzr CVS"
+expression=
+
+while read name; do
+   expression="$expression ""! -path */$name ! -path */$name/*"
+done < <(tr ' ' $'\n' <<< "$names")
+
+find $* $expression

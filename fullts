@@ -14,6 +14,8 @@ Usage: $(basename "$0") [FILE]
 '$(basename "$0")' displays the current time in the format:
 'YYYMMDDhhmmss'. If the argument FILE is given, it displays
 the timestamp of FILE in this format.
+
+See also: 'timestamp_id'
 DOCSTRING
 
 if [ -z "$1" ]; then

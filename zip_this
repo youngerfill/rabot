@@ -26,6 +26,8 @@ Example:
 
     user@host ~/myfolder $ zip_this
     /home/user/myfolder_20140522225226_0fg.zip
+
+See also: 'zip_folder', 'tgz_this'
 DOCSTRING
 
 require clean_this

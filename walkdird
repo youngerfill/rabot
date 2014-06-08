@@ -7,7 +7,6 @@ if [ "$?" -ne "0" ]; then
 fi
 
 checkForHelp "$1"
-
 minNumArgs 2 $#
 
 : << DOCSTRING
@@ -22,6 +21,8 @@ Example:
     /home/user
     /home/user/mydir
     /home/user/myotherdir
+
+See also: 'walkdir'
 DOCSTRING
 
 require walkdir

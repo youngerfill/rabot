@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-    echo "Error: $(basename "$0") requires an argument" >&2
-    exit 1
+if [ -n "$1" ]; then
+    export PATH=${PATH}:$(find "$1" -type d | tr '\n' ':' | sed 's/:$//')
 fi
-
-# Add dir tree to path
-PATH=${PATH}:$(find "$1" -type d | tr '\n' ':' | sed 's/:$//')
-export PATH
-

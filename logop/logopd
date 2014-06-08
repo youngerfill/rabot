@@ -26,7 +26,7 @@ following differences:
   not be updated. Instead, a 'latest.txt' symlink is created/updated
   in the 'DIR' directory.
 
-For further info, see: 'logop --help'
+For more info, see: 'logop --help'
 
 A minimal sample of the first form:
 
@@ -55,6 +55,8 @@ A minimal sample of the second form:
 
     ==== Elapsed: 0.00 seconds
     ==== End log: 2014-05-23 22:38:17
+
+See also: 'logop', 'logopf'
 DOCSTRING
 
 require logop

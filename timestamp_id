@@ -23,6 +23,8 @@ Example:
 
     user@host ~ $ timestamp_id
     20140328133629_1oy
+
+See also: 'fullts', 'randid'
 DOCSTRING
 
 require fullts

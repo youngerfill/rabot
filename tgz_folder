@@ -7,7 +7,6 @@ if [ "$?" -ne "0" ]; then
 fi
 
 checkForHelp $1
-
 minNumArgs 2 $#
 
 : << DOCSTRING
@@ -32,6 +31,8 @@ Example:
 
     user@host ~ $ tgz_folder somedir/myfolder .
     /home/user/myfolder_20140522224511_fw0.tgz
+
+See also: 'tgz_files', 'tgz_this'
 DOCSTRING
 
 require timestamp_id

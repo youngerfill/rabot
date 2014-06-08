@@ -23,6 +23,8 @@ Summary: Compress the contents of the Current Working Directory (CWD)
    located in the parent directory of the CWD.
 
 3. 'mv' this .tgz file to the destination directory.
+
+See also: 'tgz_this', 'zip_this', 'clean_this'
 DOCSTRING
 
 require tgz_this
