@@ -13,7 +13,7 @@ Rabot (an acronym for "**R**\ abot: a **b**\ unch **o**\ f **t**\ ools") is a co
 They can be installed simply by downloading them and adding the ``rabot`` directory to the ``PATH`` variable in your ``.bashrc`` file. There's a script called ``addtree2path`` in ``rabot`` to do just that.
 If you add the following line to ``.bashrc``:
 
-.. code-block:: bash
+::
 
     . ~/tools/rabot/addtree2path ~/tools
 
@@ -26,7 +26,7 @@ The rest of this document consists of the ``--help`` output of the scripts.
 bu_this
 -------
 
-.. code-block:: bash
+::
 
   Usage: bu_this
 
@@ -46,7 +46,7 @@ bu_this
 clean_this
 ----------
 
-.. code-block:: bash
+::
 
   Usage: clean_this
 
@@ -70,7 +70,7 @@ clean_this
 flon
 ----
 
-.. code-block:: bash
+::
 
   Usage: FINDCOMMAND | flon
 
@@ -96,7 +96,7 @@ flon
 fnd
 ---
 
-.. code-block:: bash
+::
 
   Usage: fnd ['find' arguments]
 
@@ -108,7 +108,7 @@ fnd
 fnd0
 ----
 
-.. code-block:: bash
+::
 
   Usage: fnd0 ['find' arguments]
 
@@ -120,7 +120,7 @@ fnd0
 fullts
 ------
 
-.. code-block:: bash
+::
 
   Usage: fullts [FILE]
 
@@ -131,7 +131,7 @@ fullts
 glon
 ----
 
-.. code-block:: bash
+::
 
   Usage: GREPCOMMAND | glon
 
@@ -166,7 +166,7 @@ glon
 grp
 ---
 
-.. code-block:: bash
+::
 
   Usage: grp [OPTIONS] REGEX DIRECTORY
 
@@ -183,7 +183,7 @@ grp
 logop
 -----
 
-.. code-block:: bash
+::
 
   Usage:
       first form:
@@ -251,7 +251,7 @@ logop
 logopd
 ------
 
-.. code-block:: bash
+::
 
   Usage:
       first form:
@@ -303,7 +303,7 @@ logopd
 logopf
 ------
 
-.. code-block:: bash
+::
 
   Usage:
       first form:
@@ -353,7 +353,7 @@ logopf
 rabot_vars
 ----------
 
-.. code-block:: bash
+::
 
   Usage: rabot_vars VARNAME
 
@@ -377,7 +377,7 @@ rabot_vars
 randid
 ------
 
-.. code-block:: bash
+::
 
   Usage: randid [LENGTH]
 
@@ -392,7 +392,7 @@ randid
 tgz_files
 ---------
 
-.. code-block:: bash
+::
 
   Usage: tgz_files FILELIST DESTDIR [PREFIX]
 
@@ -436,7 +436,7 @@ tgz_files
 tgz_folder
 ----------
 
-.. code-block:: bash
+::
 
   Usage: tgz_folder FOLDER DESTDIR [PREFIX]
 
@@ -463,7 +463,7 @@ tgz_folder
 tgz_this
 --------
 
-.. code-block:: bash
+::
 
   Usage: tgz_this
 
@@ -486,7 +486,7 @@ tgz_this
 timestamp_id
 ------------
 
-.. code-block:: bash
+::
 
   Usage: timestamp_id
 
@@ -506,7 +506,7 @@ timestamp_id
 walkdir
 -------
 
-.. code-block:: bash
+::
 
   Usage: walkdir COMMAND [ARG1]...
 
@@ -524,7 +524,7 @@ walkdir
 walkdird
 --------
 
-.. code-block:: bash
+::
 
   Usage: walkdird DIR COMMAND [ARG1]...
 
@@ -541,7 +541,7 @@ walkdird
 zip_folder
 ----------
 
-.. code-block:: bash
+::
 
   Usage: zip_folder FOLDER DESTDIR [PREFIX]
 
@@ -568,7 +568,7 @@ zip_folder
 zip_this
 --------
 
-.. code-block:: bash
+::
 
   Usage: zip_this
 
