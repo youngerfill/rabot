@@ -21,11 +21,11 @@ DOCSTRING
 
 require find
 
-names=".git .svn .hg .bzr CVS"
+excludedDirs=".git .svn .hg .bzr CVS"
 expression=
 
 while read name; do
    expression="$expression ! -path */$name ! -path */$name/*"
-done < <(tr ' ' $'\n' <<< "$names")
+done < <(tr ' ' $'\n' <<< "$excludedDirs")
 
 find $* $expression

@@ -18,13 +18,22 @@ Usage: $(basename "$0") [OPTIONS] REGEX DIRECTORY
 
 This means, respectively: display line numbers, search recursively
 through the directory tree, skip binary files and use the PCRE regex
-flavor.
+flavour.
 
-Additionally, directories named '.git', '.hg', '.svn' or '.bzr'
-will be skipped during the search, and output will be displayed in
+Additionally, directories named '.git', '.hg', '.svn', '.bzr' or 'CVS'
+will be skipped during the search and output will be displayed in
 colour.
 
 See also: 'fnd'
 DOCSTRING
 
-grep -nrIP --color --exclude-dir=\.bzr --exclude-dir=\.git --exclude-dir=\.hg --exclude-dir=\.svn $*
+require grep
+
+excludedDirs=".git .svn .hg .bzr CVS"
+excludeOptions=
+
+while read name; do
+   excludeOptions="$excludeOptions --exclude-dir=\\$name"
+done < <(tr ' ' $'\n' <<< "$excludedDirs")
+
+grep -nrIP --color $excludeOptions $*
