@@ -1,7 +1,6 @@
 bu_this
 -------
-
-.. code-block:: bash
+::
 
   Usage: bu_this
 
@@ -18,10 +17,11 @@ bu_this
 
   3. 'mv' this .tgz file to the destination directory.
 
+  See also: 'tgz_this', 'zip_this', 'clean_this'
+
 clean_this
 ----------
-
-.. code-block:: bash
+::
 
   Usage: clean_this
 
@@ -44,8 +44,7 @@ clean_this
 
 flon
 ----
-
-.. code-block:: bash
+::
 
   Usage: FINDCOMMAND | flon
 
@@ -68,10 +67,11 @@ flon
   The latter window will contain a list of every file in
   the current working directory and all its subdirectories.
 
+  See also: 'glon'
+
 fnd
 ---
-
-.. code-block:: bash
+::
 
   Usage: fnd ['find' arguments]
 
@@ -80,10 +80,11 @@ fnd
 
       '.git', '.hg', '.svn', '.bzr' and 'CVS'
 
+  See also: 'fnd0', 'grp'
+
 fnd0
 ----
-
-.. code-block:: bash
+::
 
   Usage: fnd0 ['find' arguments]
 
@@ -94,8 +95,7 @@ fnd0
 
 fullts
 ------
-
-.. code-block:: bash
+::
 
   Usage: fullts [FILE]
 
@@ -103,10 +103,11 @@ fullts
   'YYYMMDDhhmmss'. If the argument FILE is given, it displays
   the timestamp of FILE in this format.
 
+  See also: 'timestamp_id'
+
 glon
 ----
-
-.. code-block:: bash
+::
 
   Usage: GREPCOMMAND | glon
 
@@ -138,10 +139,11 @@ glon
   search term 'rabot' found in files of the current working
   directory and its subdirectories.
 
+  See also: 'flon'
+
 grp
 ---
-
-.. code-block:: bash
+::
 
   Usage: grp [OPTIONS] REGEX DIRECTORY
 
@@ -151,14 +153,15 @@ grp
   through the directory tree, skip binary files and use the PCRE regex
   flavor.
 
-  Additionally, directories named '.git', '.hg', '.svn', '.bzr' or 'CVS'
+  Additionally, directories named '.git', '.hg', '.svn' or '.bzr'
   will be skipped during the search, and output will be displayed in
   colour.
 
+  See also: 'fnd'
+
 logop
 -----
-
-.. code-block:: bash
+::
 
   Usage:
       first form:
@@ -223,10 +226,11 @@ logop
       ==== Elapsed: 0.00 seconds
       ==== End log: 2014-05-23 22:34:24
 
+  See also: 'logopd', 'logopf'
+
 logopd
 ------
-
-.. code-block:: bash
+::
 
   Usage:
       first form:
@@ -245,7 +249,7 @@ logopd
     not be updated. Instead, a 'latest.txt' symlink is created/updated
     in the 'DIR' directory.
 
-  For further info, see: 'logop --help'
+  For more info, see: 'logop --help'
 
   A minimal sample of the first form:
 
@@ -275,10 +279,11 @@ logopd
       ==== Elapsed: 0.00 seconds
       ==== End log: 2014-05-23 22:38:17
 
+  See also: 'logop', 'logopf'
+
 logopf
 ------
-
-.. code-block:: bash
+::
 
   Usage:
       first form:
@@ -295,7 +300,7 @@ logopf
 
   - No symlink 'latest.txt' is created or updated.
 
-  For further info, see: 'logop --help'
+  For more info, see: 'logop --help'
 
   A minimal sample of the first form:
 
@@ -325,10 +330,11 @@ logopf
       ==== Elapsed: 0.00 seconds
       ==== End log: 2014-05-23 22:43:18
 
+  See also: 'logop', 'logopd'
+
 rabot_vars
 ----------
-
-.. code-block:: bash
+::
 
   Usage: rabot_vars VARNAME
 
@@ -349,10 +355,12 @@ rabot_vars
   For a list of all variables defined by 'rabot_vars' and
   their values, see the source code of the script.
 
+  If you are a first-time user of rabot, you probably might want to edit
+  this script to change the default values of some of the variables.
+
 randid
 ------
-
-.. code-block:: bash
+::
 
   Usage: randid [LENGTH]
 
@@ -366,8 +374,7 @@ randid
 
 tgz_files
 ---------
-
-.. code-block:: bash
+::
 
   Usage: tgz_files FILELIST DESTDIR [PREFIX]
 
@@ -408,10 +415,11 @@ tgz_files
       /home/user/two.txt
       /home/user/20140519142819_5sp.tgz
 
+  See also: 'tgz_folder', 'tgz_this'
+
 tgz_folder
 ----------
-
-.. code-block:: bash
+::
 
   Usage: tgz_folder FOLDER DESTDIR [PREFIX]
 
@@ -435,10 +443,11 @@ tgz_folder
       user@host ~ $ tgz_folder somedir/myfolder .
       /home/user/myfolder_20140522224511_fw0.tgz
 
+  See also: 'tgz_files', 'tgz_this'
+
 tgz_this
 --------
-
-.. code-block:: bash
+::
 
   Usage: tgz_this
 
@@ -458,10 +467,11 @@ tgz_this
       user@host ~/myfolder $ tgz_this
       /home/user/myfolder_20140522221601_5ve.tgz
 
+  See also: 'tgz_folder', 'tgz_files'
+
 timestamp_id
 ------------
-
-.. code-block:: bash
+::
 
   Usage: timestamp_id
 
@@ -478,10 +488,11 @@ timestamp_id
       user@host ~ $ timestamp_id
       20140328133629_1oy
 
+  See also: 'fullts', 'randid'
+
 walkdir
 -------
-
-.. code-block:: bash
+::
 
   Usage: walkdir COMMAND [ARG1]...
 
@@ -496,10 +507,11 @@ walkdir
       /home/user/mydir
       /home/user/myotherdir
 
+  See also: 'walkdird'
+
 walkdird
 --------
-
-.. code-block:: bash
+::
 
   Usage: walkdird DIR COMMAND [ARG1]...
 
@@ -513,10 +525,11 @@ walkdird
       /home/user/mydir
       /home/user/myotherdir
 
+  See also: 'walkdir'
+
 zip_folder
 ----------
-
-.. code-block:: bash
+::
 
   Usage: zip_folder FOLDER DESTDIR [PREFIX]
 
@@ -540,10 +553,11 @@ zip_folder
       user@host ~ $ zip_folder somedir/myfolder .
       /home/user/myfolder_20140522224809_m94.zip
 
+  See also: 'zip_this', 'tgz_folder', 'tgz_this'
+
 zip_this
 --------
-
-.. code-block:: bash
+::
 
   Usage: zip_this
 
@@ -562,3 +576,5 @@ zip_this
 
       user@host ~/myfolder $ zip_this
       /home/user/myfolder_20140522225226_0fg.zip
+
+  See also: 'zip_folder', 'tgz_this'
