@@ -23,10 +23,10 @@ Every executable script in ``rabot`` has its own help function. You get the help
 
 Most scripts fall into the following categories:
 
-   * Easily create compressed, timestamped snapshots of your work-in-progress: ``bu-this``, ``clean-this``, ``tgz-files``, ``tgz-folder``, ``tgz-this``, ``zip-folder``, ``zip-this``. This can come in handy if you are collaborating with someone over email, or for little things where you think proper version control is too much hassle.
-   * Saving the output of console programs to logfiles: ``logop``, ``logopd``, ``logopf``.
-   * Searching through directory trees while ignoring the subdirectories created by version control software: ``fnd``, ``fnd0``, ``grp``.
-   * Navigate through search results with ``vim`` and its ``quickfix`` window: ``flon``, ``glon``.
+* Easily create compressed, timestamped snapshots of your work-in-progress: ``bu-this``, ``clean-this``, ``tgz-files``, ``tgz-folder``, ``tgz-this``, ``zip-folder``, ``zip-this``. This can come in handy if you are collaborating with someone over email, or for little things where you think proper version control is too much hassle.
+* Saving the output of console programs to logfiles: ``logop``, ``logopd``, ``logopf``.
+* Searching through directory trees while ignoring the subdirectories created by version control software: ``fnd``, ``fnd0``, ``grp``.
+* Navigate through search results with ``vim`` and its ``quickfix`` window: ``flon``, ``glon``.
 
 The rest of this document consists of the ``--help`` output of the scripts.
 
