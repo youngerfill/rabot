@@ -26,9 +26,4 @@ Example:
 See also: 'walkdird'
 DOCSTRING
 
-while read dir; do
-    pushd "$dir" > /dev/null
-    $*
-    popd > /dev/null
-done < <(find . -type d)
-
+fun-walkdir $*

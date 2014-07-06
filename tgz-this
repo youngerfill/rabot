@@ -38,7 +38,7 @@ folderName=$(basename $folderPath)
 fullScriptPath=$(readlink -f "$0")
 
 # 1.
-clean-this
+clean-this > /dev/null 2>&1
 exitOnError 1 "The script 'clean-this' returned an error."
 
 cd ..

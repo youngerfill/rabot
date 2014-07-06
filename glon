@@ -42,4 +42,6 @@ directory and its subdirectories.
 See also: 'flon'
 DOCSTRING
 
+require vim
+
 vim -c 'set errorformat=%f:%l:%m' -c 'cb!' -c 'copen' -
