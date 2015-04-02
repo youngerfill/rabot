@@ -1,5 +1,5 @@
 #!/bin/bash
 
 if [ -n "$1" ]; then
-    export PATH=${PATH}:$(find "$1" -type d | tr '\n' ':' | sed 's/:$//')
+    export PATH="${PATH}:$(find -L "$1" -type d | tr '\n' ':' | sed 's/:$//')"
 fi

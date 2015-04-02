@@ -1,0 +1,16 @@
+
+" Map key to a sequence in normal, insert, visual and command mode
+function Map_key(key, sequence)
+    let seq_esc = a:sequence
+    execute 'nnoremap ' . a:key . ' ' . seq_esc
+    execute 'inoremap ' . a:key . ' <esc>' . seq_esc
+    execute 'vnoremap ' . a:key . ' <esc><esc>' . seq_esc
+    execute 'cnoremap ' . a:key . ' <esc><esc>' . seq_esc
+endfunction
+
+" F6 : goto to next error
+call Map_key('<F6>', ':update<CR>:cn<CR>zz')
+
+" Shift-F6 : goto previous error
+call Map_key('<S-F6>', ':update<CR>:cp<CR>zz')
+

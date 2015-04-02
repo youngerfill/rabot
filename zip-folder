@@ -50,15 +50,15 @@ if [ ! -w "$2" ]; then
     exitWith 1 "Error: the destination folder '$2' isn't writable"
 fi
 
-tsid=$(timestamp-id)
+tsid="$(timestamp-id)"
 exitOnError 1 "The script 'timestamp-id' returned an error."
 
-prefix=${3:-$(basename $(readlink -f $1))}
+prefix="${3:-$(basename "$(readlink -f "$1")")}"
 exitOnError 1 "Could not set the prefix."
 
-destFile=${2:-.}/${prefix}_$tsid.zip
+destFile="${2:-.}/${prefix}_$tsid.zip"
 zip -rq "$destFile" "$1"
 exitOnError 1 "The command 'zip -r $destFile $1' returned an error"
 
-echo $(readlink -f $destFile)
+echo "$(readlink -f "$destFile")"
 

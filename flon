@@ -18,6 +18,12 @@ Usage: FINDCOMMAND | $(basename "$0")
 This allows for easy navigation through all files found
 by FINDCOMMAND.
 
+At startup, 'vim' will map the ':cn' and ':cp' commands
+to the 'F6' and '<SHIFT>-F6' key combinations,
+respectively. You can change this mapping either by
+editing the file 'vimnav' or by editing/overriding
+the variable 'vimNav' in 'rabot-vars'.
+
 The 'quickfix' window will assume that the output
 contains nothing but filenames, as 'vim' will be
 started with 'errorformat' equal to '%f'.
@@ -35,4 +41,6 @@ DOCSTRING
 
 require vim
 
-vim -c 'set errorformat=%f' -c 'cb!' -c 'copen' -
+vimFile="$(rabot-vars vimNav)"
+
+vim -c "so $vimFile" -c "set errorformat=%f" -c "cb!" -c "copen" -

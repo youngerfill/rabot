@@ -31,13 +31,13 @@ require tgz-this
 require rabot-vars
 
 # 1.
-destDir=$(rabot-vars backupDir)
+destDir="$(rabot-vars backupDir)"
 
 mkdir -p "$destDir"
 exitOnError 1 "Error: the command 'mkdir -p \"$destDir\"' returned an error"
 
 # 2.
-tgzFile=$(tgz-this)
+tgzFile="$(tgz-this)"
 exitOnError 1 "The script 'tgz-this' returned an error"
 
 if [ ! -f "$tgzFile" ]; then
@@ -45,7 +45,7 @@ if [ ! -f "$tgzFile" ]; then
 fi
 
 # 3.
-mv $tgzFile $destDir
+mv "$tgzFile" "$destDir"
 exitOnError 1 "The command 'mv $tgzFile $destDir' returned an error"
 
-echo $destDir/$(basename $tgzFile)
+echo "$destDir/$(basename "$tgzFile")"

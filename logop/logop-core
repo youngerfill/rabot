@@ -10,16 +10,16 @@ require pwd
 
 # Obtain path to external time command, to avoid having to use
 # the limited shell built-in command.
-timeCmd=$(which time)
+timeCmd="$(which time)"
 
 # Print header
 echo ====  Start log: `date '+%Y-%m-%d %H:%M:%S'` | tee -a "$logFile"
-echo ==== Logscript: $(readlink -f $0)  | tee -a "$logFile"
+echo ==== Logscript: "$(readlink -f "$0")"  | tee -a "$logFile"
 if [ "$#" -gt 0 ]; then
     echo ==== Command: $*  | tee -a "$logFile"
 fi
-echo ==== Working directory: $(pwd) | tee -a "$logFile"
-echo ==== Logfile: $(readlink -f $logFile) | tee -a "$logFile"
+echo ==== Working directory: "$(pwd)" | tee -a "$logFile"
+echo ==== Logfile: "$(readlink -f "$logFile")" | tee -a "$logFile"
 echo  | tee -a "$logFile"
 
 # Run the command and log its output

@@ -77,7 +77,6 @@ DOCSTRING
 
 require timestamp-id
 require fullts
-require logop-core
 require rabot-vars
 
 logDir="$(rabot-vars logDir)"

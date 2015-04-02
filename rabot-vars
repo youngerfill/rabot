@@ -26,6 +26,9 @@ the variable before calling this script. For example:
     $ $(basename "$0") logDir
     MySpecialLogDir
 
+The value of the variables can also be permanently changed by editing
+'rabot-vars'.
+
 For a list of all variables defined by '$(basename "$0")' and
 their values, see the source code of the script.
 
@@ -33,13 +36,15 @@ If you are a first-time user of rabot, you probably might want to edit
 this script to change the default values of some of the variables.
 DOCSTRING
 
-: ${rabotDir:="$(dirname $0)"}
+: ${rabotDir:="$(dirname "$0")"}
 
 : ${logDir:="$HOME/log"}
 
 : ${backupDir:="$HOME/Dropbox/bu_projects"}
 
 : ${recursiveRequire:=true}
+
+: ${vimNav:="$rabotDir/vimnav"}
 
 if [ -n "$1" ]; then
     eval echo \$$1

@@ -9,9 +9,9 @@ fi
 checkForHelp $1
 
 : << DOCSTRING
-Usage: $(basename $0)
+Usage: $(basename "$0")
 
-'$(basename $0)' performs the following actions:
+'$(basename "$0")' performs the following actions:
 
 1. Check for an executable file named 'clean' in the
    Current Working Directory (CWD) and run it, if found.

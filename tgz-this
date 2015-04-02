@@ -33,9 +33,9 @@ DOCSTRING
 require clean-this
 require tgz-folder
 
-folderPath=$(pwd)
-folderName=$(basename $folderPath)
-fullScriptPath=$(readlink -f "$0")
+folderPath="$(pwd)"
+folderName="$(basename "$folderPath")"
+fullScriptPath="$(readlink -f "$0")"
 
 # 1.
 clean-this > /dev/null 2>&1

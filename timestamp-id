@@ -30,5 +30,5 @@ DOCSTRING
 require fullts
 require randid
 
-echo $(fullts)_$(randid)
+echo "$(fullts)_$(randid)"
 

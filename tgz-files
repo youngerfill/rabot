@@ -54,12 +54,12 @@ DOCSTRING
 
 require timestamp-id
 
-fileList=$(readlink -f $1)
+fileList="$(readlink -f "$1")"
 if [ ! -f "$fileList" ]; then
     exitWith 1 "Error: file \"$fileList\" does not exist."
 fi
 
-destDir=$(readlink -f $2)
+destDir="$(readlink -f "$2")"
 if [ ! -d "$destDir" ]; then
     mkdir -p "destDir$"
     exitOnError 1 "Could not create directory \"$destDir\""
@@ -69,14 +69,14 @@ if [ -n "$3" ]; then
     prefix=$3_
 fi
 
-tsid=$(timestamp-id)
+tsid="$(timestamp-id)"
 exitOnError 1 "Error while running \"timestamp-id\""
 
 destFile="$destDir/$prefix$tsid.tgz"
 #cd
 
-homedir_escaped=$(sed 's/\//\\\//g' <<<$HOME)
+homedir_escaped="$(sed 's/\//\\\//g' <<<"$HOME")"
 cat "$fileList" | sed "s/^~/$homedir_escaped/g" | xargs -I{} readlink -f "{}" | xargs tar cpvz -P -C / -f $destFile
 exitOnError 1 "while creating tarball: \"$destFile\" from file list: \"$fileList\""
 
-echo $(readlink -f $destFile)
+echo "$(readlink -f "$destFile")"
