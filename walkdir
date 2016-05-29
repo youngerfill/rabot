@@ -10,20 +10,26 @@ checkForHelp $1
 minNumArgs 1 $#
 
 : << DOCSTRING
-Usage: $(basename "$0") COMMAND [ARG1]...
+Usage: $(basename "$0") DIR COMMAND [ARG1]...
 
 '$(basename "$0")' performs COMMAND with its arguments in
-every directory of the tree rooted in the current working
-directory.
+every directory of the tree rooted in DIR.
 
 Example:
 
-    user@host ~ $ walkdir pwd
+    user@host / $ $(basename "$0") ~ pwd
     /home/user
     /home/user/mydir
     /home/user/myotherdir
 
-See also: 'walkdird'
 DOCSTRING
 
-fun-walkdir $*
+cd "$1"
+exitOnError 1 "walkdir : Could not 'cd' into $1"
+shift
+
+while read dir; do
+    pushd "$dir" > /dev/null
+    "$*"
+    popd > /dev/null
+done < <(find . -type d)

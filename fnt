@@ -1,0 +1,50 @@
+#!/bin/bash
+
+. rabot-common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") DIRECTORY [FILE EXTENSIONS]
+
+'$(basename "$0")' wraps the 'fnd' script by searching in
+DIRECTORY for filenames with extensions given as a list
+of arguments.
+
+Directory names having any of the given extensions are
+not listed.
+
+The string matching of extensions is case-insensitive.
+
+Example:
+    $ fnt . cpp h
+    ./utils.h
+    ./main.cpp
+    ./utils.cpp
+
+See also: 'fnd', 'fnd0', 'grp'
+DOCSTRING
+
+require find
+
+dir="$1"
+extensions=
+
+shift
+
+for a; do
+
+    if [ ! -z "$extensions" ]; then
+        extensions="$extensions -o"
+    fi
+
+    extensions="$extensions -iname \\\\*.$a"
+
+done
+
+bash -c "fnd $dir -type f $extensions"
+

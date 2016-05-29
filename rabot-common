@@ -3,6 +3,21 @@
 [ -n "$RABOT_COMMON" ] && return || readonly RABOT_COMMON=1
 
 
+############################################################
+#                                                          #
+#    Some utility functions used by the 'rabot' scripts    #
+#                                                          #
+############################################################
+
+
+#
+# Exits bash script after printing a message to stderr
+#
+# exitWith EXITSTAUS MESSAGE
+#
+# EXITSTATUS : (default 1) the exit status
+# MESSAGE : (default empty) the message
+#
 function exitWith
 {
     if [ -n "$2" ]; then
@@ -16,6 +31,16 @@ function exitWith
 }
 
 
+#
+# Exits bash script and prints a message to stderr if a previous
+# command returned with a non-zero exit status. Do nothing
+# otherwise.
+#
+# exitOnError EXITSTATUS MESSAGE
+#
+# EXITSTATUS : (default 1) the exit status
+# MESSAGE : (default empty) the message
+#
 function exitOnError
 {
     exitStatus="$?"
@@ -26,6 +51,15 @@ function exitOnError
 }
 
 
+#
+# Tests whether one directory is a subdirectory of another.
+# Prints result to stdout. Both directories must exist.
+#
+# isSubdirOf DIR1 DIR2
+#
+# DIR1 : the candidate subdirectory
+# DIR2 : the candidate parent (or grandparent etc...) directory
+#
 function isSubdirOf
 {
     if [ -z "$1" -o -z "$2" ]; then
@@ -52,65 +86,92 @@ function isSubdirOf
 }
 
 
-function require
+#
+# Checks whether a given file is a text file.
+# Returns 0 for true and 1 for false
+#
+# isTextFile FILE
+#
+function isTextFile
 {
-    if [ -z "$1" ]; then
-        exitWith 1  "Error: 'require' requires an argument"
+    if [ "$(file --mime-type "$1" | cut -d':' -f 2 | cut -d'/' -f 1 | sed "s/^[[:space:]]*//g" | sed "s/[[:space:]]*$//g")" = "text" ]; then
+        true
+    else
+        false
     fi
-
-    toolsDirtree="$(rabot-vars rabotDir)"
-    recursiveRequire="$(rabot-vars recursiveRequire)"
-    : ${recursiveRequire:=false}
-
-    function append
-    {
-        echo "$1 $2"
-    }
-
-    function has
-    {
-        tr ' ' $'\n' <<<"$1" | grep ^"$2"$ > /dev/null 2>&1
-        if [ "$?" -eq "0" ]; then
-            echo true
-        else
-            echo false
-        fi
-    }
-
-    function require-core
-    {
-        if $(has "$2" "$1"); then
-            exitWith 1 "Error: circular dependency detected: $(sed "s/ / -> /g" <<<"$2") -> $1"
-        fi
-
-        pathToCommand="$(which "$1")"
-        exitOnError 1 "Required command: '$1' not found"
-
-        if "$recursiveRequire"; then
-            if "$(isSubdirOf "$(dirname "$pathToCommand")" "$toolsDirtree")"; then
-                while read line; do
-                    toolName="$(grep -o '\S\S*$' <<<$line)"
-                    require-core "$toolName" "$(append "$2" "$1")"
-                done < <(grep "^require\s\s*\S\S*\s*$" "$pathToCommand")
-            fi
-        fi
-    }
-
-    require-core "$1" "$(basename "$(readlink -f "$0")")"
 }
 
 
+#
+# Checks whether a given directory has no subdirectories
+# Returns 0 for true and 1 for false
+#
+# isLeafDir DIR
+#
+function isLeafDir
+{
+    if [ -z "$1" ]; then
+        false
 
-# To be used at the command line:
-#   $ . rabot-common
-#   $ showReq scriptName
+    elif [ ! -d "$1" ]; then
+        false
+
+    elif [ "$(find "$1" -type d | wc -l)" != "1" ]; then
+        false
+
+    else
+        true
+
+    fi
+}
+
+#
+# Checks whether a given directory is empty
+# Returns 0 for true and 1 for false
+#
+# isEmptyDir DIR
+#
+function isEmptyDir
+{
+    if [ -z "$1" ]; then
+        false
+
+    elif [ ! -d "$1" ]; then
+        false
+
+    elif [ "$(find "$1" | wc -l)" != "1" ]; then
+        false
+
+    else
+        true
+
+    fi
+}
+
+#
+# Checks whether a given executable is available.
+# Terminates the script when not.
+#
+# require EXEC
+#
+function require
+{
+    which "$1" > /dev/null 2>&1
+    exitOnError 1 "Required command: '$1' not found"
+}
+
+
+#
+# Prints all 'require'd executables of a given script.
+# Descends recursively into 'require'd scripts.
+#
+# showReq SCRIPT
+#
 function showReq
 {
     if [ -z "$1" ]; then
         exitWith 1  "Error: 'showReq' requires an argument"
     fi
-
-    toolsDirtree="$(rabot-vars rabotDir)"
 
     function processRequirements
     {
@@ -126,13 +187,9 @@ function showReq
         if [ "$?" -ne "0" ]; then
             echo "'$1' not found" >&2
         else
-            parentDirOfCommand="$(dirname "$pathToCommand")"
-
-            if "$(isSubdirOf "$parentDirOfCommand" "$toolsDirtree")"; then
-                echo "${pathToCommand:$(expr $(expr match "$pathToCommand" $(dirname "$toolsDirtree")) + 1)}"
+            echo "$(basename "$pathToCommand")"
+            if isTextFile "$pathToCommand"; then
                 processRequirements "$pathToCommand"
-            else
-                echo "$(basename "$pathToCommand")"
             fi
         fi
     }
@@ -141,14 +198,28 @@ function showReq
 }
 
 
+#
+# Terminates the script when not root
+#
+# rootOnly [MESSAGE]
+#
+# MESSAGE : Optional custom message to print
+#           on stderr when exiting.
+#
 function rootOnly
 {
-  if [ "$EUID" -ne 0 ]; then
-    exitWith 1 "You must be root"
-  fi
+    message="$1"
+    : ${message:="You must be root"}
+
+    if [ "$EUID" -ne 0 ]; then
+    exitWith 1 "$message"
+    fi
 }
 
 
+#
+# Prints the script's help
+#
 function showHelp
 {
     rgxbegin="^ *: *<< *DOCSTRING *$"
@@ -178,6 +249,9 @@ function showHelp
 }
 
 
+#
+# Prints help if requested on command line
+#
 function checkForHelp
 {
     if [ "$1" = "--help" ]; then
@@ -186,7 +260,37 @@ function checkForHelp
 }
 
 
-# Usage: acquireLock LOCKNAME [TIMEOUT_SECONDS]
+#
+# Try to acquire a lock. If the lock can't be acquired,
+# wait either indefinitely or for a specified number of
+# seconds.
+#
+# acquireLock LOCKNAME [TIMEOUT_SECONDS]
+#
+# LOCKNAME : the name of the lock
+# TIMEOUT_SECONDS : the amount of time to wait before
+#                   giving up. Can be 0 for immediate
+#                   return.
+#
+# Examples:
+#
+# Try to acquire a lock, and if not (yet) possible,
+# wait indefinitely for it:
+#
+#   acquireLock mylock
+#
+#
+# Try to acquire a lock, and if not (yet) possible,
+# give up immediately:
+#
+#   acquireLock mylock 0
+#
+#
+# Try to acquire a lock, and if not (yet) possible,
+# wait for 5 seconds before giving up:
+#
+#   acquireLock mylock 5
+#
 function acquireLock
 {
     if [ -z "$1" ]; then
@@ -201,7 +305,23 @@ function acquireLock
     flock -x $waitArgs"$FD"
 }
 
-# Usage: oneInstance [block]
+
+#
+# Allow only one instance of the script running at the time.
+# Exits the script immediately or wait indefinitely if another
+# instance is detected.
+#
+# Examples:
+#
+# Exits immediately if another instance detected:
+#
+#   oneInstance
+#
+#
+# Wait idnefinitely if another instance detected:
+#
+#   oneInstance block
+#
 function oneInstance
 {
     lockName="$(basename "$0")"
@@ -211,6 +331,16 @@ function oneInstance
     exitOnError 1 "An instance of this script is already running."
 }
 
+#
+# Check if the command line has the minimum required number
+# of arguments.
+#
+# Example:
+#
+# Exits with an error if the number of arguments is < 2:
+#
+#   minNumArgs 2
+#
 function minNumArgs
 {
     if [ "$2" -lt "$1" ]; then
@@ -219,11 +349,35 @@ function minNumArgs
     fi
 }
 
-function fun-walkdir
+
+#
+# Look for all executable files in the 'FOLDER' directory
+# tree and calls them one by one with the option '--help'.
+# In between the resulting output, markup is added in the
+# reStructuredText format.
+#
+function allHelp
 {
-    while read dir; do
-        pushd "$dir" > /dev/null
-        $*
-        popd > /dev/null
-    done < <(find . -type d)
+    while read fullname; do
+        name="$(basename "$fullname")"
+        echo $name
+        echo $name | tr [:print:] '-'
+        echo ::
+        echo
+        $fullname --help | sed "s/^/  /" | sed "s/[[:space:]]*$//"
+        echo
+    done < <(fnd $1 -executable ! -type d | sort)
 }
+
+
+#
+# Create contents of README.rst file
+#
+function docRabot
+{
+    toolsDirtree="$(rabot-vars rabotDir)"
+    cat "$toolsDirtree/readme-part.txt"
+    echo
+    allHelp "$toolsDirtree"
+}
+
