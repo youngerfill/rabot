@@ -10,6 +10,7 @@
 ############################################################
 
 
+############################################################
 #
 # Exits bash script after printing a message to stderr
 #
@@ -31,6 +32,7 @@ function exitWith
 }
 
 
+############################################################
 #
 # Exits bash script and prints a message to stderr if a previous
 # command returned with a non-zero exit status. Do nothing
@@ -40,6 +42,16 @@ function exitWith
 #
 # EXITSTATUS : (default 1) the exit status
 # MESSAGE : (default empty) the message
+#
+# Warning: If bash commands are executed on-the-fly to produce the
+#          message string, the exit status of the previous command
+#          will be reset before control reaches the body of the
+#          function 'exitOnError'. For example, the following command:
+#
+#               exitOnError 1 "The directory: $(pwd) is empty"
+#
+#          will never abort the script as long as the 'pwd' command
+#          succeeds.
 #
 function exitOnError
 {
@@ -51,6 +63,7 @@ function exitOnError
 }
 
 
+############################################################
 #
 # Tests whether one directory is a subdirectory of another.
 # Prints result to stdout. Both directories must exist.
@@ -86,6 +99,7 @@ function isSubdirOf
 }
 
 
+############################################################
 #
 # Checks whether a given file is a text file.
 # Returns 0 for true and 1 for false
@@ -102,6 +116,7 @@ function isTextFile
 }
 
 
+############################################################
 #
 # Checks whether a given directory has no subdirectories
 # Returns 0 for true and 1 for false
@@ -125,6 +140,7 @@ function isLeafDir
     fi
 }
 
+############################################################
 #
 # Checks whether a given directory is empty
 # Returns 0 for true and 1 for false
@@ -148,6 +164,7 @@ function isEmptyDir
     fi
 }
 
+############################################################
 #
 # Checks whether a given executable is available.
 # Terminates the script when not.
@@ -161,6 +178,7 @@ function require
 }
 
 
+############################################################
 #
 # Prints all 'require'd executables of a given script.
 # Descends recursively into 'require'd scripts.
@@ -198,6 +216,7 @@ function showReq
 }
 
 
+############################################################
 #
 # Terminates the script when not root
 #
@@ -217,6 +236,7 @@ function rootOnly
 }
 
 
+############################################################
 #
 # Prints the script's help
 #
@@ -249,6 +269,7 @@ function showHelp
 }
 
 
+############################################################
 #
 # Prints help if requested on command line
 #
@@ -260,6 +281,7 @@ function checkForHelp
 }
 
 
+############################################################
 #
 # Try to acquire a lock. If the lock can't be acquired,
 # wait either indefinitely or for a specified number of
@@ -306,6 +328,7 @@ function acquireLock
 }
 
 
+############################################################
 #
 # Allow only one instance of the script running at the time.
 # Exits the script immediately or wait indefinitely if another
@@ -331,6 +354,7 @@ function oneInstance
     exitOnError 1 "An instance of this script is already running."
 }
 
+############################################################
 #
 # Check if the command line has the minimum required number
 # of arguments.
@@ -350,6 +374,7 @@ function minNumArgs
 }
 
 
+############################################################
 #
 # Look for all executable files in the 'FOLDER' directory
 # tree and calls them one by one with the option '--help'.
@@ -370,6 +395,7 @@ function allHelp
 }
 
 
+############################################################
 #
 # Create contents of README.rst file
 #

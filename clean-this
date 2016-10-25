@@ -31,7 +31,8 @@ fi
 
 # 2. Delete files named in 'clean.txt', if any
 if [ -f "./clean.txt" ]; then
-    cat clean.txt | xargs -I{} rm -rf ./"{}"
+    cat clean.txt | xargs -I{} bash -c "rm -rf ./{}"
+#    cat clean.txt | xargs -I{} rm -rf ./{}
 fi
 
 # 3. Build the 'clean' target of 'Makefile', if any

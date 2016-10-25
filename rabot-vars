@@ -52,7 +52,7 @@ DOCSTRING
 #
 # The directory where .tgz files produced by 'bu-this' should be stored
 #
-: ${backupDir:="$HOME/Dropbox/bu_projects"}
+: ${backupDir:="$HOME/backup"}
 
 
 #
