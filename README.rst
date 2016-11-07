@@ -69,6 +69,34 @@ clean-this
   3. Look for a file named 'Makefile' in the CWD and
      - if found - run the command 'make clean'.
 
+decrypt
+-------
+::
+
+  Usage: decrypt INFILE [OUTFILE]
+
+  'decrypt' decrypts INFILE with the aes-256-cbc
+  cipher and saves the result as OUTFILE. If INFILE ends
+  with '.enc' then you can omit OUTFILE, and the output
+  filename will be INFILE without its '.enc' suffix.
+  If the output file exists, it will be overwritten.
+  You will be prompted for a password.
+
+  See also: 'encrypt'
+
+encrypt
+-------
+::
+
+  Usage: encrypt FILENAME [OUTFILE]
+
+  'encrypt' encrypts FILENAME with the aes-256-cbc
+  cipher and saves the result as either FILENAME.enc or OUTFILE.
+  If the output file exists, it will be overwritten.
+  You will be prompted twice for a password.
+
+  See also: 'decrypt'
+
 flon
 ----
 ::

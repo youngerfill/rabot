@@ -354,6 +354,7 @@ function oneInstance
     exitOnError 1 "An instance of this script is already running."
 }
 
+
 ############################################################
 #
 # Check if the command line has the minimum required number

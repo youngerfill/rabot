@@ -1,0 +1,32 @@
+#!/bin/bash
+
+. rabot-common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+minNumArgs 1 $#
+
+: << DOCSTRING
+Usage: $(basename "$0") FILENAME [OUTFILE]
+
+'$(basename "$0")' encrypts FILENAME with the aes-256-cbc
+cipher and saves the result as either FILENAME.enc or OUTFILE.
+If the output file exists, it will be overwritten.
+You will be prompted twice for a password.
+
+See also: 'decrypt'
+DOCSTRING
+
+if [ ! -f "$1" ]; then
+    exitWith 1 "Error: '$1' not found."
+fi
+
+outputFile=${2:-$1.enc}
+
+openssl aes-256-cbc -in "$1" -out "$outputFile"
+exitOnError 1 "Could not encrypt '$1'"
+
+echo "$(readlink -f "$outputFile")"
