@@ -4,30 +4,34 @@ if [ -z "$logFile" ]; then
     exitWith 1 "Error: the variable 'logFile' has no value. Exiting."
 fi
 
-require time
-require tee
 require pwd
 
-# Obtain path to external time command, to avoid having to use
-# the limited shell built-in command.
-timeCmd="$(which time)"
-
 # Print header
-echo ====  Start log: `date '+%Y-%m-%d %H:%M:%S'` | tee -a "$logFile"
-echo ==== Logscript: "$(readlink -f "$0")"  | tee -a "$logFile"
+echo ====  Start log: `date '+%Y-%m-%d %H:%M:%S'`
+echo ==== Logscript: "$(readlink -f "$0")"
 if [ "$#" -gt 0 ]; then
-    echo ==== Command: $*  | tee -a "$logFile"
+    echo ==== Command: $*
 fi
-echo ==== Working directory: "$(pwd)" | tee -a "$logFile"
-echo ==== Logfile: "$(readlink -f "$logFile")" | tee -a "$logFile"
-echo  | tee -a "$logFile"
+echo ==== Working directory: "$(pwd)"
+echo ==== Logfile: "$(readlink -f "$logFile")"
+echo
 
 # Run the command and log its output
+startTime=$(date +%s)
+
 if [ "$#" -gt 0 ]; then
-    $timeCmd -f "\n==== Exit status: %x\n==== Elapsed: %e seconds" $* 2>&1 | tee -a "$logFile"
+    $* 2>&1
+    exitStatus=$?
 else
-    $timeCmd -f "\n==== Elapsed: %e seconds" tee -a "$logFile" <&0
+    cat <&0
 fi
 
+endTime=$(date +%s)
+
 # Print footer
-echo ====  End log: `date '+%Y-%m-%d %H:%M:%S'` | tee -a "$logFile"
+echo
+if [ "$#" -gt 0 ]; then
+    echo ====  Exit status: $exitStatus
+fi
+echo ====  Elapsed: $(elapsedTime $startTime $endTime L)
+echo ====  End log: `date '+%Y-%m-%d %H:%M:%S'`

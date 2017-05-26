@@ -76,6 +76,7 @@ See also: 'logopd', 'logopf'
 DOCSTRING
 
 require timestamp-id
+require fullts
 require rabot-vars
 
 logDir="$(rabot-vars logDir)"
@@ -85,4 +86,5 @@ logFile="$logDir/$fileName"
 # Update symlink 'latest.txt' to point to latest logfile
 ln -sf "$fileName" "$logDir/latest.txt"
 
-. logop-core $* 2>&1 | tee -a "$logFile"
+. logop-core $*
+

@@ -1,0 +1,61 @@
+#!/bin/bash
+
+. rabot-common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") [TEXT] [STATUS]
+
+'$(basename "$0")' reads from stdin and after reaching EOF displays
+a dialog box with all lines read as selectable items.
+You can select or deselect every item individually.
+When you press "OK", '$(basename "$0")' prints a list of the selected
+items on stdout, one item per line, and terminates.
+
+When pressing "Cancel" '$(basename "$0")' terminates without printing
+any output.
+
+With the optional argument TEXT you can put an explanatory
+text in the dialog. The default is the empty string.
+
+STATUS determines the initial state of the items. 'off' for
+deselected and 'on' for selected. Default is 'off'.
+
+This script depends on the command-line tool 'dialog'.
+
+Examples:
+
+Choose a couple of files in ~/log to remove:
+
+    $ lfiles ~/log | pickn | xargs rm
+
+TODO: 'git add' example
+
+See also: 'pick1', 'lfiles'
+
+DOCSTRING
+
+require dialog
+
+text="$1"
+status=${2:-off}
+
+i=0
+while read line; do
+    item[$i]="$line"
+    items="$items $i \"$line\" $status"
+    i=$(expr $i + 1)
+done
+
+tags=$(bash -c "dialog --keep-tite --no-tags --title \"pickn\" --checklist \"$text\" 0 0 0 $items 3>&1 1>&2 2>&3 3>&-")
+
+while read tag; do
+    if [ -n "$tag" ]; then
+        echo ${item[$tag]}
+    fi
+done < <(echo $tags | tr ' ' $'\n')

@@ -377,6 +377,59 @@ function minNumArgs
 
 ############################################################
 #
+# Echo the elapsed time between two given moments
+# in a human-readable format.
+#
+# elapsedTime START END [LONG]
+#
+# START : the start time in seconds
+# END : the end time in seconds
+# LONG : use the long format (the argument value can be anything)
+#
+# Examples:
+#
+# $ elapsedTime 10 1000
+# 16m 30s
+#
+# $ elapsedTime 10 1234567 L
+# 14 days 6 hours 55 minutes and 57 seconds
+#
+function elapsedTime
+{
+    if [ -z "$2" ]; then
+        exitWith 1 "Error: $FUNCNAME() needs at least two arguments."
+    fi
+
+    if [ -n "$3" ]; then
+        local ds=" days "
+        local hs=" hours "
+        local ms=" minutes "
+        local as="and "
+        local ss=" seconds"
+    else
+        local ds="d "
+        local hs="h "
+        local ms="m "
+        local as=""
+        local ss="s"
+    fi
+
+    local T=$(expr $2 - $1)
+    local D=$((T/60/60/24))
+    local H=$((T/60/60%24))
+    local M=$((T/60%60))
+    local S=$((T%60))
+
+    (( $D > 0 )) && echo -n "$D$ds"
+    (( $H > 0 )) && echo -n "$H$hs"
+    (( $M > 0 )) && echo -n "$M$ms"
+    (( $D > 0 || $H > 0 || $M > 0 )) && echo -n "$as"
+    echo "$S$ss"
+}
+
+
+############################################################
+#
 # Look for all executable files in the 'FOLDER' directory
 # tree and calls them one by one with the option '--help'.
 # In between the resulting output, markup is added in the

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+. rabot-common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") [DIR]
+
+'$(basename "$0")' outputs the full paths to every regular file 
+in the directory DIR (or the current working directory
+if the argument is omitted), one file per line and sorted
+by modification time in reverse chronological order. This
+output can be useful as input to other tools, like 'pickn'
+or 'pick1'.
+
+Examples:
+
+List log files created by 'logop':
+
+    $ lfiles ~/log
+    /home/user/log/20161120205104_tBS.txt
+    /home/user/log/20161120153503_zyW.txt
+    /home/user/log/20161120153224_sFf.txt
+
+Choose one log file to view:
+
+    $ lfiles ~/log | pick1 | xargs less
+
+See also: 'pick1', 'pickn', 'logop'
+DOCSTRING
+
+find "$(readlink -f ${1:-.})" -maxdepth 1 -type f -printf '%C@ %p\n' | sort -r | cut -d ' ' -f 2
