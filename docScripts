@@ -1,0 +1,36 @@
+#!/bin/bash
+
+. rabot-common
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-common" >&2
+  exit 1
+fi
+
+checkForHelp $1
+
+: << DOCSTRING
+Usage: $(basename "$0") [DIR]
+
+'$(basename "$0")' prints the documentation of all executable files found in a given
+directory tree DIR or, by default, in the Current Working Directory (CWD).
+First the contents of a file 'DIR/readme-part.rst' (if it exists) are printed to
+stdout. Then every executable file in DIR is called with the option '--help' and
+additional reStrucuredText is added to the output.
+
+Example:
+
+Create a README file in reStructuredText format, documenting all scripts in the CWD:
+
+    docScripts . > README.rst
+
+DOCSTRING
+
+directory=${1:-$PWD}
+cd $directory
+exitOnError 1 "The command 'cd $directory' returned an error"
+
+introFile="readme-part.rst"
+if [ -f "$introFile" ]; then
+    cat "$introFile"
+fi
+allHelp .

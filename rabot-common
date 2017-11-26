@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -n "$RABOT_COMMON" ] && return || readonly RABOT_COMMON=1
+#[ -n "$RABOT_COMMON" ] && return || readonly RABOT_COMMON=1
 
 
 ############################################################
@@ -12,7 +12,19 @@
 
 ############################################################
 #
-# Exits bash script after printing a message to stderr
+# Print to stderr
+#
+# errcho [ARGS]
+#
+function errcho
+{
+    echo "$*" >&2
+}
+
+
+############################################################
+#
+# Exit bash script after printing a message to stderr
 #
 # exitWith EXITSTAUS MESSAGE
 #
@@ -22,7 +34,7 @@
 function exitWith
 {
     if [ -n "$2" ]; then
-        echo "$2" >&2
+        errcho "$2"
     fi
     if [ -n "$1" ]; then
         exit "$1"
@@ -34,7 +46,7 @@ function exitWith
 
 ############################################################
 #
-# Exits bash script and prints a message to stderr if a previous
+# Exit bash script and print a message to stderr if a previous
 # command returned with a non-zero exit status. Do nothing
 # otherwise.
 #
@@ -65,8 +77,8 @@ function exitOnError
 
 ############################################################
 #
-# Tests whether one directory is a subdirectory of another.
-# Prints result to stdout. Both directories must exist.
+# Test if one directory is a subdirectory of another.
+# Print result to stdout. Both directories must exist.
 #
 # isSubdirOf DIR1 DIR2
 #
@@ -91,35 +103,28 @@ function isSubdirOf
     realDir2="$(readlink -f "$2")"
 
     lengthMatched="$(expr match "$realDir1" "$realDir2")"
-    if [ "$lengthMatched" -eq "${#realDir2}" ]; then
-        echo true
-    else
-        echo false
-    fi
+
+    [ "$lengthMatched" -eq "${#realDir2}" ]
 }
 
 
 ############################################################
 #
-# Checks whether a given file is a text file.
-# Returns 0 for true and 1 for false
+# Check if a given file is a text file.
+# Return 0 for true and 1 for false
 #
 # isTextFile FILE
 #
 function isTextFile
 {
-    if [ "$(file --mime-type "$1" | cut -d':' -f 2 | cut -d'/' -f 1 | sed "s/^[[:space:]]*//g" | sed "s/[[:space:]]*$//g")" = "text" ]; then
-        true
-    else
-        false
-    fi
+    [ "$(file --mime-type "$1" | cut -d':' -f 2 | cut -d'/' -f 1 | sed "s/^[[:space:]]*//g" | sed "s/[[:space:]]*$//g")" = "text" ]
 }
 
 
 ############################################################
 #
-# Checks whether a given directory has no subdirectories
-# Returns 0 for true and 1 for false
+# Check if a given directory has no subdirectories
+# Return 0 for true and 1 for false
 #
 # isLeafDir DIR
 #
@@ -140,10 +145,11 @@ function isLeafDir
     fi
 }
 
+
 ############################################################
 #
-# Checks whether a given directory is empty
-# Returns 0 for true and 1 for false
+# Check if a given directory is empty
+# Return 0 for true and 1 for false
 #
 # isEmptyDir DIR
 #
@@ -164,10 +170,11 @@ function isEmptyDir
     fi
 }
 
+
 ############################################################
 #
-# Checks whether a given executable is available.
-# Terminates the script when not.
+# Check if a given executable is available.
+# Terminate the script when not.
 #
 # require EXEC
 #
@@ -180,8 +187,8 @@ function require
 
 ############################################################
 #
-# Prints all 'require'd executables of a given script.
-# Descends recursively into 'require'd scripts.
+# Print all 'require'd executables of a given script.
+# Descend recursively into 'require'd scripts.
 #
 # showReq SCRIPT
 #
@@ -203,7 +210,7 @@ function showReq
     {
         pathToCommand="$(which "$1")"
         if [ "$?" -ne "0" ]; then
-            echo "'$1' not found" >&2
+            errcho "'$1' not found"
         else
             echo "$(basename "$pathToCommand")"
             if isTextFile "$pathToCommand"; then
@@ -218,7 +225,7 @@ function showReq
 
 ############################################################
 #
-# Terminates the script when not root
+# Terminate the script when not root
 #
 # rootOnly [MESSAGE]
 #
@@ -238,7 +245,7 @@ function rootOnly
 
 ############################################################
 #
-# Prints the script's help
+# Print the script's help
 #
 function showHelp
 {
@@ -271,7 +278,7 @@ function showHelp
 
 ############################################################
 #
-# Prints help if requested on command line
+# Print help if requested on command line
 #
 function checkForHelp
 {
@@ -360,16 +367,21 @@ function oneInstance
 # Check if the command line has the minimum required number
 # of arguments.
 #
+# minNumArgs MIN ACTUAL
+#
+# MIN : the minimum required number of arguments
+# ACTUAL : The actual number of arguments
+#
 # Example:
 #
-# Exits with an error if the number of arguments is < 2:
+# Exits with an error because 1 < 2
 #
-#   minNumArgs 2
+#   minNumArgs 2 1
 #
 function minNumArgs
 {
     if [ "$2" -lt "$1" ]; then
-        echo "$(basename "$0"): missing operand"
+        errcho "$(basename "$0"): missing operand"
         exitWith 1 "Try '$(basename "$0") --help' for more information."
     fi
 }
@@ -430,10 +442,12 @@ function elapsedTime
 
 ############################################################
 #
-# Look for all executable files in the 'FOLDER' directory
-# tree and calls them one by one with the option '--help'.
-# In between the resulting output, markup is added in the
-# reStructuredText format.
+# Look for all executable files in a directory tree and
+# call them one by one with the option '--help'.
+# In between the resulting output, markup is added in
+# the reStructuredText format.
+#
+# allHelp DIR
 #
 function allHelp
 {
@@ -447,17 +461,3 @@ function allHelp
         echo
     done < <(fnd $1 -executable ! -type d | sort)
 }
-
-
-############################################################
-#
-# Create contents of README.rst file
-#
-function docRabot
-{
-    toolsDirtree="$(rabot-vars rabotDir)"
-    cat "$toolsDirtree/readme-part.txt"
-    echo
-    allHelp "$toolsDirtree"
-}
-

@@ -64,4 +64,6 @@ DOCSTRING
 logFile="$1"
 shift
 
-. logop-core $* 2>&1 | tee -a "$logFile"
+. logop-core $* 2>&1 > >(tee -a "$logFile")
+
+exit $logopExitStatus

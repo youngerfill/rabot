@@ -64,4 +64,3 @@ require logop
 export logDir=$1
 shift
 . logop $*
-

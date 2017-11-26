@@ -26,7 +26,7 @@ the variable before calling this script. For example:
     $ $(basename "$0") logDir
     MySpecialLogDir
 
-The value of the variables can also be permanently changed by editing
+The value of the variables can also be changed permanently by editing
 'rabot-vars'.
 
 For a list of all variables defined by '$(basename "$0")' and

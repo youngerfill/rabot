@@ -11,12 +11,12 @@ checkForHelp $1
 : << DOCSTRING
 Usage: $(basename "$0") [DIR]
 
-'$(basename "$0")' outputs the full paths to every regular file 
-in the directory DIR (or the current working directory
-if the argument is omitted), one file per line and sorted
-by modification time in reverse chronological order. This
-output can be useful as input to other tools, like 'pickn'
-or 'pick1'.
+'$(basename "$0")' outputs the full paths to all regular files in
+the directory DIR (or the current working directory if
+the argument is omitted), one file per line and sorted by
+modification time in reverse chronological order (newest
+first). This output can be useful as input to other tools,
+like 'pickn' or 'pick1'.
 
 Examples:
 
@@ -29,7 +29,7 @@ List log files created by 'logop':
 
 Choose one log file to view:
 
-    $ lfiles ~/log | pick1 | xargs less
+    $ lfiles ~/log | pick1 | xargs -r less
 
 See also: 'pick1', 'pickn', 'logop'
 DOCSTRING

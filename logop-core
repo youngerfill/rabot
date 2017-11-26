@@ -21,7 +21,7 @@ startTime=$(date +%s)
 
 if [ "$#" -gt 0 ]; then
     $* 2>&1
-    exitStatus=$?
+    export logopExitStatus=$?
 else
     cat <&0
 fi
@@ -31,7 +31,7 @@ endTime=$(date +%s)
 # Print footer
 echo
 if [ "$#" -gt 0 ]; then
-    echo ====  Exit status: $exitStatus
+    echo ====  Exit status: $logopExitStatus
 fi
 echo ====  Elapsed: $(elapsedTime $startTime $endTime L)
 echo ====  End log: `date '+%Y-%m-%d %H:%M:%S'`

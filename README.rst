@@ -29,7 +29,6 @@ Most scripts fall into the following categories:
 * Navigate through search results with ``vim`` and its ``quickfix`` window: ``flon``, ``glon``.
 
 The rest of this document consists of the ``--help`` output of the scripts.
-
 bu-this
 -------
 ::
@@ -83,6 +82,25 @@ decrypt
   You will be prompted for a password.
 
   See also: 'encrypt'
+
+docScripts
+----------
+::
+
+  Usage: docScripts [DIR]
+
+  'docScripts' prints the documentation of all executable files found in a given
+  directory tree DIR or, by default, in the Current Working Directory (CWD).
+  First the contents of a file 'DIR/readme-part.rst' (if it exists) are printed to
+  stdout. Then every executable file in DIR is called with the option '--help' and
+  additional reStrucuredText is added to the output.
+
+  Example:
+
+  Create a README file in reStructuredText format, documenting all scripts in the CWD:
+
+      docScripts . > README.rst
+
 
 encrypt
 -------
@@ -248,6 +266,34 @@ grp
   colour.
 
   See also: 'fnd'
+
+lfiles
+------
+::
+
+  Usage: lfiles [DIR]
+
+  'lfiles' outputs the full paths to all regular files in
+  the directory DIR (or the current working directory if
+  the argument is omitted), one file per line and sorted by
+  modification time in reverse chronological order (newest
+  first). This output can be useful as input to other tools,
+  like 'pickn' or 'pick1'.
+
+  Examples:
+
+  List log files created by 'logop':
+
+      $ lfiles ~/log
+      /home/user/log/20161120205104_tBS.txt
+      /home/user/log/20161120153503_zyW.txt
+      /home/user/log/20161120153224_sFf.txt
+
+  Choose one log file to view:
+
+      $ lfiles ~/log | pick1 | xargs -r less
+
+  See also: 'pick1', 'pickn', 'logop'
 
 logop
 -----
@@ -422,6 +468,77 @@ logopf
 
   See also: 'logop', 'logopd'
 
+pick1
+-----
+::
+
+  Usage: pick1 [TEXT]
+
+  'pick1' reads from stdin and after reaching EOF
+  displays a dialog box with all lines read as items in a
+  menu. When you select an item, 'pick1' prints
+  the item on stdout and terminates.
+
+  When pressing Cancel 'pick1' terminates without
+  printing any output.
+
+  With the optional argument TEXT you can put an explanatory
+  text in the dialog. The default is the empty string.
+
+  This script depends on the command-line tool 'dialog'.
+
+  Examples:
+
+  Choose one file in ~/log to view with 'less':
+
+      $ lfiles ~/log | pick1 | xargs less
+
+  See also: 'pickn', 'lfiles'
+
+pickn
+-----
+::
+
+  Usage: pickn [TEXT] [STATUS]
+
+  'pickn' reads from stdin and after reaching EOF displays
+  a dialog box with all lines read as selectable items.
+  You can select or deselect every item individually.
+  When you press OK, 'pickn' prints a list of the selected
+  items on stdout, one item per line, and terminates.
+
+  When pressing Cancel 'pickn' terminates without printing
+  any output.
+
+  With the optional argument TEXT you can put an explanatory
+  text in the dialog. The default is the empty string.
+
+  STATUS determines the initial state of the items. 'off' for
+  deselected and 'on' for selected. Default is 'off'.
+
+  This script depends on the command-line tool 'dialog'.
+
+  Examples:
+
+  Choose a couple of files in ~/log to remove:
+
+      $ lfiles ~/log | pickn | xargs rm
+
+  TODO: 'git add' example
+
+  See also: 'pick1', 'lfiles'
+
+
+precommit
+---------
+::
+
+  Usage: precommit
+
+  'precommit' updates the file 'README.rst' containing
+  the 'rabot' documentation. This can be done before
+  committing to version control.
+
 rabot-vars
 ----------
 ::
@@ -442,7 +559,7 @@ rabot-vars
       $ rabot-vars logDir
       MySpecialLogDir
 
-  The value of the variables can also be permanently changed by editing
+  The value of the variables can also be changed permanently by editing
   'rabot-vars'.
 
   For a list of all variables defined by 'rabot-vars' and

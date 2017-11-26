@@ -78,6 +78,7 @@ DOCSTRING
 require timestamp-id
 require rabot-vars
 
+# Construct path to logfile
 logDir="$(rabot-vars logDir)"
 fileName="$(timestamp-id).txt"
 logFile="$logDir/$fileName"
@@ -85,4 +86,6 @@ logFile="$logDir/$fileName"
 # Update symlink 'latest.txt' to point to latest logfile
 ln -sf "$fileName" "$logDir/latest.txt"
 
-. logop-core $* 2>&1 | tee -a "$logFile"
+. logop-core $* 2>&1 > >(tee -a "$logFile")
+
+exit $logopExitStatus
