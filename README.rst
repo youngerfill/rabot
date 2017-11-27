@@ -29,6 +29,7 @@ Most scripts fall into the following categories:
 * Navigate through search results with ``vim`` and its ``quickfix`` window: ``flon``, ``glon``.
 
 The rest of this document consists of the ``--help`` output of the scripts.
+
 bu-this
 -------
 ::

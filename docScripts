@@ -32,5 +32,6 @@ exitOnError 1 "The command 'cd $directory' returned an error"
 introFile="readme-part.rst"
 if [ -f "$introFile" ]; then
     cat "$introFile"
+    echo
 fi
 allHelp .
